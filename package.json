@@ -1,6 +1,7 @@
 {
   "name": "tools",
   "version": "0.1.0",
+  "description": "A collection of online tools that prioritize frontend execution for performance and privacy",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack --port 3000",

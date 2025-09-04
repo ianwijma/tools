@@ -1,0 +1,356 @@
+---
+description: Tool development workflow and implementation guidelines
+globs: ["src/lib/**/*", "src/components/tools/**/*", "src/app/**/page.tsx"]
+alwaysApply: false
+---
+
+# Tool Development Guidelines
+
+## Tool Creation Workflow
+
+### 1. Planning Phase
+Before writing any code, answer these questions:
+- What is the single, specific purpose of this tool?
+- Can this run entirely in the frontend?
+- What are the input and output types?
+- What error conditions need to be handled?
+- How will users know what this tool does?
+- What are the edge cases to test?
+
+### 2. Implementation Steps
+1. **Define Single Purpose**: Clearly define what the tool does (and what it doesn't do)
+2. **Create Types**: Define TypeScript interfaces in `src/types/[tool-name].ts`
+3. **Implement Logic**: Create tool logic in `src/lib/[tool-name].ts`
+4. **Build Component**: Create React component in `src/components/tools/[ToolName]Tool.tsx`
+5. **Add Page**: Create page in `src/app/[tool-name]/page.tsx`
+6. **Add API Route**: Only if server processing is needed in `src/app/api/[tool-name]/route.ts`
+7. **Test Thoroughly**: Test across browsers and devices
+8. **Document Usage**: Add clear instructions and examples
+
+## Tool Naming Rules
+
+### Good Examples
+- `ImageResizer` - Only resizes images to specific dimensions
+- `TextFormatter` - Only formats text (indentation, case, etc.)
+- `JsonValidator` - Only validates JSON syntax
+- `ColorConverter` - Only converts between color formats (HEX, RGB, HSL)
+- `PasswordGenerator` - Only generates secure passwords
+- `QrCodeGenerator` - Only generates QR codes
+
+### Avoid These
+- `ImageTool` - Too generic, could do anything with images
+- `TextProcessor` - Too broad, could format, translate, analyze, etc.
+- `UtilityTool` - Extremely generic, no clear purpose
+- `DataConverter` - Too vague, what kind of data?
+
+### Naming Convention
+- Use specific action verbs: `Resize`, `Format`, `Validate`, `Convert`, `Generate`, `Parse`, `Encode`, `Decode`
+- Include the data type: `Image`, `Text`, `Json`, `Color`, `Password`, `QrCode`
+- Be descriptive: `ImageResizer` not `ImageTool`
+- Avoid generic terms: `Processor`, `Manager`, `Handler`, `Utility`
+
+## Single Responsibility Examples
+
+### ✅ Good: Focused Tools
+```typescript
+// ImageResizer - ONLY resizes images
+export class ImageResizer {
+  static process(input: { image: File, width: number, height: number }) {
+    // Only resize logic
+  }
+}
+
+// TextFormatter - ONLY formats text
+export class TextFormatter {
+  static process(input: { text: string, options: FormatOptions }) {
+    // Only formatting logic
+  }
+}
+
+// JsonValidator - ONLY validates JSON
+export class JsonValidator {
+  static process(input: { jsonString: string }) {
+    // Only validation logic
+  }
+}
+```
+
+### ❌ Bad: Multi-Purpose Tools
+```typescript
+// ImageTool - Does too many things
+export class ImageTool {
+  static resize() { /* resize logic */ }
+  static convert() { /* convert logic */ }
+  static compress() { /* compress logic */ }
+  static addFilter() { /* filter logic */ }
+}
+
+// TextProcessor - Too broad
+export class TextProcessor {
+  static format() { /* format logic */ }
+  static translate() { /* translate logic */ }
+  static analyze() { /* analyze logic */ }
+  static validate() { /* validate logic */ }
+}
+```
+
+## Frontend-First Implementation
+
+### When to Use Frontend Processing
+- Text manipulation and formatting
+- Basic calculations and conversions
+- Image processing with Canvas API
+- Data validation and parsing
+- Simple cryptographic operations (hashing, encoding)
+- File processing: Small to medium files (< 100MB)
+- JSON/XML/CSV processing
+- Color conversions
+- Password generation
+- QR code generation
+
+### Frontend Processing Examples
+```typescript
+// Text formatting - runs in browser
+export class TextFormatter {
+  static process(input: TextInput): TextOutput {
+    // Use browser APIs for text processing
+    return formattedText;
+  }
+}
+
+// Image resizing - uses Canvas API
+export class ImageResizer {
+  static process(input: ImageInput): ImageOutput {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    // Resize using Canvas API
+    return resizedImage;
+  }
+}
+
+// JSON validation - pure JavaScript
+export class JsonValidator {
+  static process(input: JsonInput): JsonOutput {
+    try {
+      JSON.parse(input.jsonString);
+      return { isValid: true };
+    } catch (error) {
+      return { isValid: false, error: error.message };
+    }
+  }
+}
+```
+
+## When to Use Server Processing
+
+### Criteria for Server-Side Processing
+- Large file processing: Files > 100MB
+- External API integration required
+- Heavy computation that would freeze browser
+- Server-only libraries needed
+- Rate limiting requirements
+
+**🚨 NEVER Use Server Processing For:**
+- Database operations (NO DATABASES ALLOWED)
+- Persistent data storage (NO PERSISTENT STORAGE ON SERVER)
+- User data persistence (USE FRONTEND STORAGE ONLY)
+- Caching user data (NO CACHING ON SERVER)
+- Complex image processing beyond Canvas capabilities
+
+### Server Processing Example
+```typescript
+// Large file processing - needs server (STATELESS ONLY)
+export class LargeFileProcessor {
+  static async processServerSide(input: FileInput): Promise<ProcessOutput> {
+    // This would be called from API route
+    // Handle large files that exceed browser memory limits
+    // 🚨 NO PERSISTENT DATA STORAGE - process and return immediately
+  }
+
+  static async processWithTempFile(tempFilePath: string, options: ProcessOptions): Promise<ProcessOutput> {
+    // Process using temporary file (e.g., CLI tool, image processing)
+    // 🚨 TEMPORARY FILE MUST BE CLEANED UP BY CALLER
+    const result = await execCLICommand(tempFilePath, options);
+    return result;
+  }
+}
+```
+
+## Error Handling Standards
+
+### Tool Error Interface
+```typescript
+export interface ToolError {
+  message: string;
+  code: string;
+  details?: any;
+  line?: number;
+  column?: number;
+}
+
+export class ToolError extends Error {
+  constructor(
+    message: string,
+    public code: string,
+    public details?: any
+  ) {
+    super(message);
+    this.name = 'ToolError';
+  }
+}
+```
+
+### Error Handling Pattern
+```typescript
+export class ToolName {
+  static process(input: ToolInput): ToolOutput | ToolError {
+    try {
+      // Validate input
+      const errors = this.validate(input);
+      if (errors.length > 0) {
+        return { 
+          message: errors.join(', '), 
+          code: 'VALIDATION_ERROR' 
+        };
+      }
+
+      // Process
+      const result = this.performProcessing(input);
+      return result;
+
+    } catch (error) {
+      return { 
+        message: 'Processing failed', 
+        code: 'PROCESSING_ERROR',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      };
+    }
+  }
+}
+```
+
+## Component Implementation Standards
+
+### Required Props and State
+```typescript
+export function ToolNameTool() {
+  // Required state
+  const [input, setInput] = useState<ToolInput>({});
+  const [output, setOutput] = useState<string>('');
+  const [error, setError] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  // Required handlers
+  const handleProcess = async () => {
+    setIsLoading(true);
+    setError('');
+    
+    try {
+      const result = ToolName.process(input);
+      
+      if ('message' in result) {
+        setError(result.message);
+        setOutput('');
+      } else {
+        setOutput(result.output);
+        setError('');
+      }
+    } catch (error) {
+      setError('An unexpected error occurred');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleClear = () => {
+    setInput({});
+    setOutput('');
+    setError('');
+  };
+
+  // Component JSX with proper loading states and error handling
+}
+```
+
+### UI Requirements
+- Clear input and output sections
+- Loading states during processing
+- Error messages with helpful information
+- Clear button to reset form
+- Responsive design
+- Accessibility compliance
+- Tool description explaining what it does and doesn't do
+
+## Testing Requirements
+
+### Unit Testing
+- Test tool logic in isolation
+- Test input validation
+- Test error conditions
+- Test edge cases
+- Mock browser APIs when necessary
+
+### Integration Testing
+- Test complete tool workflows
+- Test UI interactions
+- Test with various input types
+- Test error handling
+- Test file uploads
+
+### Browser Testing
+- Test across different browsers (Chrome, Firefox, Safari, Edge)
+- Test mobile responsiveness
+- Test accessibility with screen readers
+- Test with various file sizes
+- Test offline functionality
+
+## Documentation Requirements
+
+### Tool Description
+Each tool must clearly state:
+- What the tool does (single purpose)
+- What the tool doesn't do
+- Input requirements
+- Output format
+- Usage examples
+- Limitations
+
+### Code Documentation
+- JSDoc comments for all public methods
+- Type definitions for all interfaces
+- Error code documentation
+- Usage examples in comments
+
+## Performance Guidelines
+
+### Frontend Optimization
+- Use lazy loading for tool components
+- Implement Web Workers for CPU-intensive operations
+- Process large datasets in chunks
+- Clean up resources after processing
+- Cache results in localStorage when appropriate
+- Debounce user input for real-time processing
+
+### Bundle Optimization
+- Use code splitting for tool logic
+- Remove unused code with tree shaking
+- Load tools on demand with dynamic imports
+- Compress images and assets
+- Use efficient algorithms for processing
+
+## Security Considerations
+
+### Input Validation
+- Validate all user inputs
+- Sanitize file uploads
+- Check file types and sizes
+- Prevent XSS attacks
+- Handle malicious inputs gracefully
+
+### Data Privacy
+- Keep sensitive data in browser when possible
+- Don't log user data unnecessarily
+- Clearly indicate when data leaves browser
+- Give users control over their data
+- Implement proper error handling without exposing sensitive info
+- **🚨 NEVER store user data on server - use frontend storage only**

@@ -1,0 +1,174 @@
+---
+description: CRITICAL: No server data storage policy - all data must be frontend-only
+globs: ["**/*"]
+alwaysApply: true
+---
+
+# 🚨 CRITICAL: NO SERVER DATA STORAGE POLICY
+
+## ABSOLUTE RULE: NO DATA STORAGE ON SERVER
+
+**THIS IS NEVER AND WILL NEVER BE ALLOWED**
+
+### What This Means
+- **NO** database connections
+- **NO** persistent file storage on server
+- **NO** user data persistence on server
+- **NO** session storage on server
+- **NO** caching on server
+- **NO** any form of persistent data storage on the server
+- **ALLOWED**: Temporary files during request processing (must be cleaned up immediately)
+
+### What IS Allowed
+- **ONLY** frontend data storage:
+  - `localStorage` for persistent data
+  - `sessionStorage` for session data
+  - `IndexedDB` for complex data
+  - Browser memory for temporary data
+  - File downloads to user's device
+
+### Server Processing Rules
+When server processing is needed (rare cases):
+- **Input data** comes from frontend request
+- **Processing** happens on server
+- **Output data** is returned to frontend immediately
+- **NO data is stored** on server between requests
+- **NO data is persisted** on server
+- **NO user data** remains on server after response
+- **ALLOWED**: Temporary files during processing (e.g., for CLI tools, image processing)
+- **REQUIRED**: Clean up all temporary files immediately after response
+
+### API Route Restrictions
+```typescript
+// ✅ CORRECT: Stateless processing with temporary files
+export async function POST(request: NextRequest) {
+  const input = await request.json();
+  let tempFile: string | null = null;
+  
+  try {
+    // Create temporary file for processing (e.g., CLI tool)
+    tempFile = await createTempFile(input.data);
+    
+    // Process with temporary file
+    const result = await processWithCLI(tempFile);
+    
+    return NextResponse.json(result);
+  } finally {
+    // 🚨 CRITICAL: Always clean up temporary files
+    if (tempFile) {
+      await fs.unlink(tempFile).catch(console.error);
+    }
+  }
+}
+
+// ✅ CORRECT: Simple stateless processing
+export async function POST(request: NextRequest) {
+  const input = await request.json();
+  const result = processData(input); // Process immediately
+  return NextResponse.json(result); // Return immediately
+  // NO STORAGE - data is gone after response
+}
+
+// ❌ FORBIDDEN: Persistent storage
+export async function POST(request: NextRequest) {
+  const input = await request.json();
+  
+  // ❌ NEVER DO THESE:
+  // await saveToDatabase(input);
+  // await writeFile(input); // Unless temporary and cleaned up
+  // await cacheData(input);
+  // await storeInMemory(input);
+  
+  const result = processData(input);
+  return NextResponse.json(result);
+}
+```
+
+### Frontend Storage Examples
+```typescript
+// ✅ CORRECT: Store in browser
+const saveUserPreferences = (prefs: UserPreferences) => {
+  localStorage.setItem('userPreferences', JSON.stringify(prefs));
+};
+
+const saveSessionData = (data: SessionData) => {
+  sessionStorage.setItem('sessionData', JSON.stringify(data));
+};
+
+const saveComplexData = async (data: ComplexData) => {
+  const db = await openDB('toolData', 1);
+  await db.put('data', data);
+};
+```
+
+### Why This Policy Exists
+1. **Privacy**: User data never leaves their device
+2. **Performance**: No database queries or file I/O
+3. **Simplicity**: No server infrastructure needed
+4. **Security**: No data breaches possible
+5. **Compliance**: No data protection regulations apply
+6. **Cost**: No storage costs or maintenance
+
+### Enforcement
+- **Every API route** must be stateless
+- **Every tool** must work without server storage
+- **Every feature** must use frontend storage only
+- **Code reviews** will reject any server storage
+- **This rule cannot be overridden**
+
+### Common Violations to Avoid
+```typescript
+// ❌ FORBIDDEN: Database storage
+await prisma.user.create({ data: userData });
+
+// ❌ FORBIDDEN: Persistent file system storage
+await fs.writeFile('data.json', JSON.stringify(data));
+
+// ❌ FORBIDDEN: Memory storage
+global.userData = userData;
+
+// ❌ FORBIDDEN: Cache storage
+await redis.set('userData', JSON.stringify(data));
+
+// ❌ FORBIDDEN: Any persistent storage
+await saveToAnyStorage(data);
+
+// ❌ FORBIDDEN: Temporary files not cleaned up
+const tempFile = await createTempFile(data);
+const result = await processFile(tempFile);
+return result; // ❌ Forgot to clean up tempFile!
+```
+
+### Correct Alternatives
+```typescript
+// ✅ CORRECT: Frontend storage
+localStorage.setItem('userData', JSON.stringify(data));
+
+// ✅ CORRECT: Download to user's device
+const blob = new Blob([JSON.stringify(data)]);
+const url = URL.createObjectURL(blob);
+const a = document.createElement('a');
+a.href = url;
+a.download = 'data.json';
+a.click();
+
+// ✅ CORRECT: Process and return immediately
+const result = processData(input);
+return NextResponse.json(result);
+
+// ✅ CORRECT: Temporary file with cleanup
+export async function POST(request: NextRequest) {
+  let tempFile: string | null = null;
+  try {
+    tempFile = await createTempFile(input.data);
+    const result = await processWithCLI(tempFile);
+    return NextResponse.json(result);
+  } finally {
+    if (tempFile) {
+      await fs.unlink(tempFile).catch(console.error);
+    }
+  }
+}
+```
+
+## REMEMBER: NO EXCEPTIONS TO THIS RULE

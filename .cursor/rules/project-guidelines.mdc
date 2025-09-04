@@ -1,0 +1,123 @@
+---
+description: Core project guidelines and principles for Online Tools Collection
+globs: ["**/*"]
+alwaysApply: true
+---
+
+# Online Tools Collection - Project Guidelines
+
+## Project Mission
+This repository creates online tools that prioritize frontend execution for performance and privacy, with server-side processing only when necessary for complex operations.
+
+## Core Principles
+
+### 1. Frontend-First Architecture
+- Tools should work entirely in the browser when feasible
+- Better performance, enhanced privacy, offline capability
+- Reduced server costs and infrastructure needs
+- **CRITICAL: NO DATA STORAGE ON SERVER - EVER**
+
+### 2. Single Responsibility Principle
+Each tool should have **one clear, focused purpose**:
+
+- **Image Resizer**: Only resizes images, does not convert formats
+- **Text Formatter**: Only formats text, does not translate or analyze
+- **JSON Validator**: Only validates JSON, does not transform or beautify
+- **Color Converter**: Only converts between color formats, does not generate palettes
+
+### 3. Progressive Enhancement
+- Base functionality works in any modern browser
+- Enhanced features for supported browsers
+- Graceful degradation for unsupported features
+
+## Development Rules
+
+### Tool Creation Rules
+1. **Define Single Purpose First**: Clearly define what the tool does (and what it doesn't do)
+2. **Plan Frontend-First**: Determine if it can run entirely in the browser
+3. **Follow Naming Convention**: Use descriptive, specific names
+4. **Create Focused Implementation**: One tool = one responsibility
+5. **Add API Route Only If Needed**: Server processing only when necessary
+
+### Naming Conventions
+- Use specific action verbs: `Resize`, `Format`, `Validate`, `Convert`, `Generate`
+- Include the data type: `Image`, `Text`, `Json`, `Color`
+- Be descriptive: `ImageResizer` not `ImageTool`
+- Avoid generic terms: `Processor`, `Manager`, `Handler`
+
+### Decision Framework
+**Use Frontend Processing When:**
+- Text manipulation and formatting
+- Basic calculations and conversions
+- Image processing with Canvas API
+- Data validation and parsing
+- Simple cryptographic operations
+- File processing: Small to medium files (< 100MB)
+
+**Consider Server Processing When:**
+- Large file processing: Files > 100MB
+- External API integration
+- Heavy computation that would freeze browser
+- Server-only libraries
+- Rate limiting requirements
+
+**NEVER Use Server Processing For:**
+- Database operations (NO DATABASES ALLOWED)
+- Data storage (NO STORAGE ON SERVER)
+- User data persistence (USE FRONTEND STORAGE ONLY)
+
+## Code Standards
+
+### TypeScript Rules
+- Use TypeScript for all new code
+- Define clear interfaces for inputs and outputs
+- Use proper error handling with typed errors
+- Export interfaces and types from dedicated files
+
+### React/Next.js Rules
+- Use functional components with hooks
+- Implement proper loading states
+- Handle errors gracefully
+- Use 'use client' directive for client components
+- Follow Next.js App Router patterns
+
+### Error Handling Rules
+```typescript
+export interface ToolError {
+  message: string;
+  code: string;
+  details?: any;
+}
+
+// Always return ToolError | ToolOutput pattern
+static process(input: ToolInput): ToolOutput | ToolError
+```
+
+### UI/UX Rules
+- Use Tailwind CSS for styling
+- Follow responsive design principles
+- Ensure accessibility compliance
+- Provide clear feedback to users
+- Include loading states and error messages
+
+## Common Mistakes to Avoid
+
+1. **Creating multi-purpose tools** - Stick to single responsibility
+2. **Using generic names** - Be specific and descriptive
+3. **Adding server processing unnecessarily** - Try frontend first
+4. **🚨 STORING DATA ON SERVER** - NEVER ALLOWED, USE FRONTEND STORAGE ONLY
+5. **Poor error handling** - Always handle errors gracefully
+6. **Ignoring accessibility** - Ensure tools work for all users
+7. **Not testing edge cases** - Test with various inputs
+8. **Poor documentation** - Document what the tool does and doesn't do
+
+## Questions to Ask Before Implementing
+
+1. **What is the single, specific purpose of this tool?**
+2. **Can this run entirely in the frontend?**
+3. **🚨 Will this require any server data storage?** (Answer must be NO)
+4. **What are the input and output types?**
+5. **What error conditions need to be handled?**
+6. **How will users know what this tool does?**
+7. **What are the edge cases to test?**
+8. **Is the naming descriptive and specific?**

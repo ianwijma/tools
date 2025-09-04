@@ -1,0 +1,409 @@
+---
+description: Architecture patterns and implementation guidelines
+globs: ["src/lib/**/*", "src/components/**/*", "src/app/**/*"]
+alwaysApply: false
+---
+
+# Architecture Patterns
+
+## Tool Development Pattern
+
+### 1. Tool Logic Structure
+```typescript
+// src/lib/[tool-name].ts
+export interface ToolInput {
+  // Define input parameters for ONE specific task
+}
+
+export interface ToolOutput {
+  // Define output structure for ONE specific result
+}
+
+export interface ToolError {
+  message: string;
+  code: string;
+  details?: any;
+}
+
+export class ToolName {
+  static process(input: ToolInput): ToolOutput | ToolError {
+    try {
+      // Validate input first
+      const errors = this.validate(input);
+      if (errors.length > 0) {
+        return { message: errors.join(', '), code: 'VALIDATION_ERROR' };
+      }
+
+      // Process with frontend logic
+      const result = this.performProcessing(input);
+      
+      return result;
+    } catch (error) {
+      return { 
+        message: 'Processing failed', 
+        code: 'PROCESSING_ERROR',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      };
+    }
+  }
+
+  static validate(input: ToolInput): string[] {
+    const errors: string[] = [];
+    // Validation logic here
+    return errors;
+  }
+
+  private static performProcessing(input: ToolInput): ToolOutput {
+    // Core processing logic here
+  }
+}
+```
+
+### 2. Component Structure
+```typescript
+// src/components/tools/[ToolName]Tool.tsx
+'use client';
+
+import { useState } from 'react';
+import { ToolName } from '@/lib/tool-name';
+import { ToolInput } from '@/types/tool-name';
+
+export function ToolNameTool() {
+  const [input, setInput] = useState<ToolInput>({});
+  const [output, setOutput] = useState<string>('');
+  const [error, setError] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const handleProcess = async () => {
+    setIsLoading(true);
+    setError('');
+    
+    try {
+      const result = ToolName.process(input);
+      
+      if ('message' in result) {
+        setError(result.message);
+        setOutput('');
+      } else {
+        setOutput(result.output);
+        setError('');
+      }
+    } catch (error) {
+      setError('An unexpected error occurred');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className="tool-container">
+      {/* Tool UI with proper loading states and error handling */}
+    </div>
+  );
+}
+```
+
+### 3. Page Structure
+```typescript
+// src/app/[tool-name]/page.tsx
+import { ToolNameTool } from '@/components/tools/ToolNameTool';
+
+export default function ToolNamePage() {
+  return (
+    <div className="container mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-4">Tool Name</h1>
+      <p className="text-gray-600 mb-6">
+        Clear description of what this tool does and what it doesn't do.
+        For other functionality, use the appropriate tool.
+      </p>
+      <ToolNameTool />
+    </div>
+  );
+}
+```
+
+### 4. API Route Structure (Only when needed - STATELESS ONLY)
+```typescript
+// src/app/api/[tool-name]/route.ts
+import { NextRequest, NextResponse } from 'next/server';
+import { ToolName } from '@/lib/tool-name';
+import fs from 'fs/promises';
+import path from 'path';
+import os from 'os';
+
+export async function POST(request: NextRequest) {
+  let tempFile: string | null = null;
+  
+  try {
+    const body = await request.json();
+    
+    // Validate input
+    const errors = ToolName.validate(body);
+    if (errors.length > 0) {
+      return NextResponse.json(
+        { error: 'Invalid input', details: errors },
+        { status: 400 }
+      );
+    }
+    
+    // If processing requires temporary files (e.g., CLI tools, image processing)
+    if (body.requiresTempFile) {
+      tempFile = path.join(os.tmpdir(), `temp-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`);
+      await fs.writeFile(tempFile, body.data);
+    }
+    
+    // Process with server-side logic (STATELESS - NO PERSISTENT STORAGE)
+    const result = tempFile 
+      ? await ToolName.processWithTempFile(tempFile, body.options)
+      : ToolName.processServerSide(body);
+    
+    // 🚨 CRITICAL: Return immediately - NO PERSISTENT DATA STORAGE
+    return NextResponse.json(result);
+  } catch (error) {
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
+  } finally {
+    // 🚨 CRITICAL: Always clean up temporary files
+    if (tempFile) {
+      try {
+        await fs.unlink(tempFile);
+      } catch (cleanupError) {
+        console.error('Failed to clean up temporary file:', cleanupError);
+      }
+    }
+  }
+}
+```
+
+## File Structure Rules
+```
+src/
+├── app/
+│   ├── api/[tool-name]/route.ts    # API routes (only when server processing needed)
+│   └── [tool-name]/page.tsx        # Tool pages
+├── components/tools/[ToolName]Tool.tsx  # Tool components
+├── lib/[tool-name].ts              # Tool logic
+└── types/[tool-name].ts            # TypeScript types
+```
+
+## Error Handling Patterns
+
+### Standard Error Interface
+```typescript
+export interface ToolError {
+  message: string;
+  code: string;
+  details?: any;
+  line?: number;
+  column?: number;
+}
+
+export class ToolError extends Error {
+  constructor(
+    message: string,
+    public code: string,
+    public details?: any
+  ) {
+    super(message);
+    this.name = 'ToolError';
+  }
+}
+```
+
+### Error Handling in Components
+```typescript
+const handleError = (error: unknown) => {
+  if (error instanceof ToolError) {
+    setError(error.message);
+  } else if (error instanceof Error) {
+    setError(error.message);
+  } else {
+    setError('An unexpected error occurred');
+  }
+};
+```
+
+## State Management Patterns
+
+### Local State Pattern
+```typescript
+const [state, setState] = useState({
+  input: '',
+  output: '',
+  error: '',
+  isLoading: false,
+  options: {
+    // tool-specific options
+  }
+});
+```
+
+### Form State Pattern
+```typescript
+const [formData, setFormData] = useState<FormData>({
+  // form fields
+});
+
+const handleInputChange = (field: keyof FormData, value: any) => {
+  setFormData(prev => ({
+    ...prev,
+    [field]: value
+  }));
+};
+```
+
+## File Processing Patterns
+
+### File Upload Pattern
+```typescript
+const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const file = event.target.files?.[0];
+  if (!file) return;
+
+  // Validate file type and size
+  if (!isValidFileType(file)) {
+    setError('Invalid file type');
+    return;
+  }
+
+  if (file.size > MAX_FILE_SIZE) {
+    setError('File too large');
+    return;
+  }
+
+  setInputFile(file);
+};
+```
+
+### File Processing Pattern
+```typescript
+const processFile = async (file: File) => {
+  setIsLoading(true);
+  
+  try {
+    // Read file content
+    const content = await readFileContent(file);
+    
+    // Process content
+    const result = ToolName.process({ content, options });
+    
+    if ('message' in result) {
+      setError(result.message);
+    } else {
+      setOutput(result.processedContent);
+    }
+  } catch (error) {
+    setError('File processing failed');
+  } finally {
+    setIsLoading(false);
+  }
+};
+```
+
+## Validation Patterns
+
+### Input Validation
+```typescript
+const validateInput = (input: ToolInput): string[] => {
+  const errors: string[] = [];
+
+  if (!input.text && input.text !== '') {
+    errors.push('Text input is required');
+  }
+
+  if (input.options.size < 0 || input.options.size > 1000) {
+    errors.push('Size must be between 0 and 1000');
+  }
+
+  return errors;
+};
+```
+
+### File Validation
+```typescript
+const validateFile = (file: File): string[] => {
+  const errors: string[] = [];
+
+  if (!ALLOWED_FILE_TYPES.includes(file.type)) {
+    errors.push(`File type ${file.type} is not supported`);
+  }
+
+  if (file.size > MAX_FILE_SIZE) {
+    errors.push(`File size ${file.size} exceeds maximum ${MAX_FILE_SIZE}`);
+  }
+
+  return errors;
+};
+```
+
+## Performance Patterns
+
+### Lazy Loading Pattern
+```typescript
+import { lazy, Suspense } from 'react';
+
+const ToolComponent = lazy(() => import('./ToolComponent'));
+
+export function ToolPage() {
+  return (
+    <Suspense fallback={<div>Loading tool...</div>}>
+      <ToolComponent />
+    </Suspense>
+  );
+}
+```
+
+### Web Worker Pattern
+```typescript
+const useWebWorker = (workerScript: string) => {
+  const [result, setResult] = useState(null);
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const processData = useCallback((data: any) => {
+    setIsLoading(true);
+    setError(null);
+
+    const worker = new Worker(workerScript);
+    
+    worker.postMessage(data);
+    
+    worker.onmessage = (e) => {
+      setResult(e.data);
+      setIsLoading(false);
+      worker.terminate();
+    };
+    
+    worker.onerror = (error) => {
+      setError(error.message);
+      setIsLoading(false);
+      worker.terminate();
+    };
+  }, [workerScript]);
+
+  return { result, error, isLoading, processData };
+};
+```
+
+### Debouncing Pattern
+```typescript
+import { useCallback, useEffect, useState } from 'react';
+
+const useDebounce = (value: any, delay: number) => {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [value, delay]);
+
+  return debouncedValue;
+};
+```

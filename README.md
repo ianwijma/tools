@@ -1,6 +1,26 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Online Tools Collection
+
+A collection of useful online tools that prioritize frontend execution for performance and privacy, with server-side processing only when necessary for more complex operations.
+
+## Project Mission
+
+This repository aims to create a comprehensive set of online tools that:
+- **Run primarily in the frontend** for fast, responsive user experiences
+- **Maintain user privacy** by processing data locally when possible
+- **Leverage server capabilities** only when frontend processing is insufficient
+- **Provide modern, accessible interfaces** for common utility tasks
+
+## Philosophy
+
+- **Frontend-First**: Tools should work entirely in the browser when feasible
+- **Single Responsibility**: Each tool has one clear, focused purpose
+- **Privacy-Conscious**: Minimize data transmission to servers
+- **Performance-Oriented**: Fast loading and responsive interactions
+- **Accessible**: Clean, intuitive interfaces that work for everyone
 
 ## Getting Started
+
+### Development
 
 First, run the development server:
 
@@ -16,7 +36,33 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The development server is configured to always run on port 3000.
+
+### Project Structure
+
+- `src/app/` - Next.js App Router pages and components
+  - `src/app/[tool-name]/` - Individual tool pages
+  - `src/app/api/[tool-name]/` - API routes (only when server processing needed)
+- `src/components/` - Reusable UI components for tools
+- `src/lib/` - Utility functions and tool implementations
+- `src/types/` - TypeScript type definitions
+
+### Adding New Tools
+
+1. **Define the tool's single purpose** - what it does and what it doesn't do
+2. Create a new page in `src/app/[tool-name]/page.tsx`
+3. Implement the tool logic in `src/lib/[tool-name].ts`
+4. Add any necessary types in `src/types/`
+5. Create API route in `src/app/api/[tool-name]/route.ts` (only if server processing is needed)
+6. Update the main page to include the new tool
+
+**Examples of Single-Purpose Tools:**
+- `ImageResizer` - Only resizes images (not format conversion)
+- `TextFormatter` - Only formats text (not translation or analysis)
+- `JsonValidator` - Only validates JSON (not transformation or beautification)
+- `ColorConverter` - Only converts color formats (not palette generation)
+
+**Note:** API routes should only be created when frontend processing is insufficient. Most tools should run entirely in the browser.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
