@@ -94,9 +94,12 @@ static process(input: ToolInput): ToolOutput | ToolError
 ```
 
 ### UI/UX Rules
-- Use Tailwind CSS for styling
+- **Use Atlaskit** as the primary UI component library from [Atlassian](https://atlaskit.atlassian.com/)
+- **Create reusable components** with uniform design scheme using Atlaskit
+- **Support light & dark mode** for all components using Atlaskit's theme system
+- Use Tailwind CSS for custom styling alongside Atlaskit
 - Follow responsive design principles
-- Ensure accessibility compliance
+- Ensure accessibility compliance (built into Atlaskit)
 - Provide clear feedback to users
 - Include loading states and error messages
 
@@ -110,6 +113,8 @@ static process(input: ToolInput): ToolOutput | ToolError
 6. **Ignoring accessibility** - Ensure tools work for all users
 7. **Not testing edge cases** - Test with various inputs
 8. **Poor documentation** - Document what the tool does and doesn't do
+9. **Not using Atlaskit** - Use Atlaskit components for consistent UI
+10. **Missing dark mode support** - All components must support both themes
 
 ## Questions to Ask Before Implementing
 
@@ -121,3 +126,5 @@ static process(input: ToolInput): ToolOutput | ToolError
 6. **How will users know what this tool does?**
 7. **What are the edge cases to test?**
 8. **Is the naming descriptive and specific?**
+9. **Does the UI use Atlaskit components for consistency?**
+10. **Does the tool support both light and dark modes?**

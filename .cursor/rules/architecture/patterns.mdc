@@ -181,9 +181,15 @@ export async function POST(request: NextRequest) {
 ```
 src/
 ├── app/
+│   ├── globals.css              # Global styles with Atlaskit theme
+│   ├── layout.tsx               # Root layout with Atlaskit ThemeProvider
 │   ├── api/[tool-name]/route.ts    # API routes (only when server processing needed)
 │   └── [tool-name]/page.tsx        # Tool pages
-├── components/tools/[ToolName]Tool.tsx  # Tool components
+├── components/
+│   ├── ui/                     # Atlaskit component wrappers
+│   ├── tools/                  # Tool-specific components
+│   │   └── [ToolName]Tool.tsx  # Individual tool components
+│   └── ThemeProvider.tsx       # Atlaskit theme context provider
 ├── lib/[tool-name].ts              # Tool logic
 └── types/[tool-name].ts            # TypeScript types
 ```

@@ -69,6 +69,10 @@ When working on this project as an AI agent, please:
 - Write clear, self-documenting code
 - Add appropriate error handling
 - Include loading states for better UX
+- **Use Atlaskit** as the primary UI component library from [Atlassian](https://atlaskit.atlassian.com/)
+- **Create reusable components** with uniform design scheme using Atlaskit
+- **Support light & dark mode** for all components using Atlaskit's theme system
+- Use Tailwind CSS for custom styling alongside Atlaskit
 
 #### Tool Development Process
 
@@ -188,6 +192,8 @@ export async function POST(request: NextRequest) {
 ```
 src/
 ├── app/                    # Next.js App Router pages
+│   ├── globals.css        # Global styles with Atlaskit theme
+│   ├── layout.tsx         # Root layout with Atlaskit ThemeProvider
 │   ├── api/               # API routes (only when server processing needed)
 │   │   └── [tool-name]/   # Tool-specific API endpoints
 │   │       └── route.ts   # API route handler
@@ -195,8 +201,10 @@ src/
 │   │   └── page.tsx       # Tool page component
 │   └── page.tsx           # Main landing page
 ├── components/            # Reusable UI components
-│   ├── ui/               # Basic UI components
-│   └── tools/            # Tool-specific components
+│   ├── ui/               # Atlaskit component wrappers
+│   ├── tools/            # Tool-specific components
+│   │   └── [ToolName]Tool.tsx  # Individual tool components
+│   └── ThemeProvider.tsx # Atlaskit theme context provider
 ├── lib/                  # Tool logic and utilities
 │   ├── [tool-name].ts    # Individual tool implementations
 │   └── utils.ts          # Shared utilities

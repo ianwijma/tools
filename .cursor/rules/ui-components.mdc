@@ -1,0 +1,177 @@
+---
+description: UI component standards using Atlaskit with light and dark mode support
+globs: ["src/components/**/*", "src/app/**/*"]
+alwaysApply: false
+---
+
+# UI Component Standards with Atlaskit
+
+## Design System Principles
+
+### Atlaskit Integration
+This project uses [Atlassian's Atlaskit](https://atlaskit.atlassian.com/) as the primary UI component library for:
+- **Consistent Design**: Atlaskit provides a unified design system
+- **Accessibility**: Built-in accessibility features and ARIA support
+- **Theme Support**: Native light and dark mode support
+- **Professional Quality**: Enterprise-grade components
+- **TypeScript Support**: Full TypeScript definitions included
+
+### Uniform Design Scheme
+All UI components should follow Atlaskit's design system with:
+- **Consistent spacing** using Atlaskit's spacing tokens
+- **Unified color palette** with semantic color tokens
+- **Standardized typography** with Atlaskit's font system
+- **Consistent border radius** and shadow patterns
+- **Uniform component sizing** and layout patterns
+
+### Light & Dark Mode Support
+All components must support both light and dark modes:
+- Use Atlaskit's built-in theme system
+- Implement proper contrast ratios for accessibility
+- Test components in both light and dark themes
+- Provide smooth transitions between themes
+
+## Atlaskit Setup
+
+### Installation
+```bash
+npm install @atlaskit/button @atlaskit/input @atlaskit/card @atlaskit/badge @atlaskit/alert @atlaskit/modal-dialog @atlaskit/dropdown-menu @atlaskit/tabs @atlaskit/theme @atlaskit/theme-provider
+```
+
+### Theme Provider Setup
+```typescript
+// src/components/ThemeProvider.tsx
+'use client';
+
+import { ThemeProvider as AtlaskitThemeProvider } from '@atlaskit/theme-provider';
+import { createContext, useContext, useEffect, useState } from 'react';
+
+type Theme = 'light' | 'dark' | 'auto';
+
+type ThemeProviderProps = {
+  children: React.ReactNode;
+  defaultTheme?: Theme;
+  storageKey?: string;
+};
+
+type ThemeProviderState = {
+  theme: Theme;
+  setTheme: (theme: Theme) => void;
+};
+
+const initialState: ThemeProviderState = {
+  theme: 'auto',
+  setTheme: () => null,
+};
+
+const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
+
+export function ThemeProvider({
+  children,
+  defaultTheme = 'auto',
+  storageKey = 'ui-theme',
+  ...props
+}: ThemeProviderProps) {
+  const [theme, setTheme] = useState<Theme>(defaultTheme);
+
+  useEffect(() => {
+    const root = window.document.documentElement;
+    root.classList.remove('light', 'dark');
+
+    if (theme === 'auto') {
+      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)')
+        .matches ? 'dark' : 'light';
+      root.classList.add(systemTheme);
+      return;
+    }
+
+    root.classList.add(theme);
+  }, [theme]);
+
+  const value = {
+    theme,
+    setTheme: (theme: Theme) => {
+      localStorage.setItem(storageKey, theme);
+      setTheme(theme);
+    },
+  };
+
+  return (
+    <ThemeProviderContext.Provider {...props} value={value}>
+      <AtlaskitThemeProvider mode={theme === 'auto' ? 'light' : theme}>
+        {children}
+      </AtlaskitThemeProvider>
+    </ThemeProviderContext.Provider>
+  );
+}
+
+export const useTheme = () => {
+  const context = useContext(ThemeProviderContext);
+
+  if (context === undefined)
+    throw new Error('useTheme must be used within a ThemeProvider');
+
+  return context;
+};
+```
+
+## Component Library Structure
+
+### Atlaskit Base Components
+```
+src/components/ui/
+```
+
+### Tool-Specific Components
+```
+src/components/tools/
+└── [ToolName]Tool.tsx   # Individual tool components
+```
+
+## Atlaskit Component Examples
+
+Create wrapper components around Atlaskit components as needed for your specific use cases. Use Atlaskit's built-in components directly when they meet your requirements.
+
+## Implementation Guidelines
+
+### Component Development Process
+1. **Use Atlaskit First**: Check if Atlaskit has the component you need
+2. **Create Wrapper**: Build wrapper components for consistent usage
+3. **Add Theme Support**: Ensure light/dark mode compatibility
+4. **Test Accessibility**: Verify Atlaskit's built-in accessibility features
+5. **Document Usage**: Add JSDoc comments and examples
+6. **Export Properly**: Include in component index
+
+### Atlaskit Best Practices
+- Use Atlaskit's built-in theming system
+- Leverage Atlaskit's accessibility features
+- Follow Atlaskit's design tokens and spacing
+- Use Atlaskit's icon system when possible
+- Implement proper loading states with Atlaskit components
+- Use Atlaskit's form validation patterns
+
+### Quality Checklist
+- [ ] Uses Atlaskit components as base
+- [ ] Supports light and dark themes
+- [ ] Includes proper TypeScript types
+- [ ] Has accessibility attributes (built into Atlaskit)
+- [ ] Works on mobile devices
+- [ ] Follows Atlaskit design system
+- [ ] Includes proper error states
+- [ ] Has loading states where needed
+- [ ] Uses consistent spacing and sizing
+
+### Testing Requirements
+- Test in both light and dark modes
+- Verify Atlaskit's built-in accessibility features
+- Check screen reader compatibility
+- Test on various screen sizes
+- Validate color contrast ratios
+- Test component interactions
+- Verify Atlaskit theme switching
+
+## Atlaskit Resources
+- [Atlassian Design System](https://atlassian.design/)
+- [Atlaskit Components](https://atlaskit.atlassian.com/)
+- [Theme Documentation](https://atlassian.design/foundations/color/)
+- [Accessibility Guidelines](https://atlassian.design/foundations/accessibility/)
