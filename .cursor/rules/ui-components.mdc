@@ -8,21 +8,31 @@ alwaysApply: false
 
 ## Design System Principles
 
-### Atlaskit Integration
-This project uses [Atlassian's Atlaskit](https://atlaskit.atlassian.com/) as the primary UI component library for:
-- **Consistent Design**: Atlaskit provides a unified design system
-- **Accessibility**: Built-in accessibility features and ARIA support
-- **Theme Support**: Native light and dark mode support
-- **Professional Quality**: Enterprise-grade components
+### Atlassian Design System Integration
+This project uses [Atlassian's Design System](https://atlassian.design/) and [Atlaskit](https://atlaskit.atlassian.com/) as the primary UI component library for:
+- **Design with Clarity**: Following Atlassian's design principles for clear, confident interfaces
+- **Foundational Guidelines**: Using design tokens and modular building blocks
+- **Accessibility**: Built-in accessibility features enabling everyone to interact and navigate
+- **Theme Support**: Native light and dark mode support with design tokens
+- **Professional Quality**: Enterprise-grade components with consistent experiences
 - **TypeScript Support**: Full TypeScript definitions included
 
-### Uniform Design Scheme
-All UI components should follow Atlaskit's design system with:
-- **Consistent spacing** using Atlaskit's spacing tokens
-- **Unified color palette** with semantic color tokens
-- **Standardized typography** with Atlaskit's font system
-- **Consistent border radius** and shadow patterns
-- **Uniform component sizing** and layout patterns
+### Atlassian Design Foundations
+All UI components should follow [Atlassian's Design System](https://atlassian.design/) foundations:
+
+#### Design Tokens
+- **Single sources of truth** to name and store design decisions
+- **Spacing tokens** for consistent layout and spacing
+- **Color tokens** for brand distinction and consistent experiences
+- **Typography tokens** for enhanced communication and brand reinforcement
+- **Elevation tokens** for proper layering and depth
+
+#### Visual Style Guidelines
+- **Clear, concise, and conversational** language following content standards
+- **Accessibility-first** design enabling everyone to interact and understand
+- **Modular building blocks** for flexible component composition
+- **Responsive design** patterns for all screen sizes
+- **Consistent visual hierarchy** using typography and spacing
 
 ### Light & Dark Mode Support
 All components must support both light and dark modes:
@@ -34,8 +44,16 @@ All components must support both light and dark modes:
 ## Atlaskit Setup
 
 ### Installation
+Install the core Atlaskit components following [Atlassian's component guidelines](https://atlassian.design/components):
 ```bash
-npm install @atlaskit/button @atlaskit/input @atlaskit/card @atlaskit/badge @atlaskit/alert @atlaskit/modal-dialog @atlaskit/dropdown-menu @atlaskit/tabs @atlaskit/theme @atlaskit/theme-provider
+# Core components
+npm install @atlaskit/button @atlaskit/textfield @atlaskit/card @atlaskit/badge @atlaskit/flag @atlaskit/box @atlaskit/inline @atlaskit/stack
+
+# Theme and styling
+npm install @atlaskit/theme @atlaskit/theme-provider
+
+# Additional components as needed
+npm install @atlaskit/modal-dialog @atlaskit/dropdown-menu @atlaskit/tabs @atlaskit/tooltip
 ```
 
 ### Theme Provider Setup
@@ -128,50 +146,69 @@ src/components/tools/
 └── [ToolName]Tool.tsx   # Individual tool components
 ```
 
-## Atlaskit Component Examples
+## Atlassian Design System Components
 
-Create wrapper components around Atlaskit components as needed for your specific use cases. Use Atlaskit's built-in components directly when they meet your requirements.
+Follow [Atlassian's component guidelines](https://atlassian.design/components) when implementing UI components:
+
+### Core Components
+- **Button**: Triggers events or actions, letting users know what happens next
+- **Badge**: Visual indicators for numeric values like tallies and scores  
+- **Flag**: Confirmations, alerts, and acknowledgments with minimal user interaction
+- **Box**: Generic container primitive with managed access to design tokens
+- **Inline**: Flexbox-based primitive for horizontal layout of direct children
+- **Stack**: Flexbox-based primitive for vertical layout of direct children
+
+### Implementation Approach
+- Use Atlaskit components directly when they meet requirements
+- Create wrapper components only when customization is needed
+- Follow Atlassian's design principles for consistent experiences
+- Leverage design tokens for spacing, color, and typography
 
 ## Implementation Guidelines
 
 ### Component Development Process
-1. **Use Atlaskit First**: Check if Atlaskit has the component you need
-2. **Create Wrapper**: Build wrapper components for consistent usage
-3. **Add Theme Support**: Ensure light/dark mode compatibility
-4. **Test Accessibility**: Verify Atlaskit's built-in accessibility features
-5. **Document Usage**: Add JSDoc comments and examples
-6. **Export Properly**: Include in component index
+1. **Follow Atlassian Design System**: Use [Atlassian's design guidelines](https://atlassian.design/) as the foundation
+2. **Use Atlaskit Components**: Check if Atlaskit has the component you need
+3. **Apply Design Tokens**: Use spacing, color, and typography tokens consistently
+4. **Ensure Accessibility**: Follow Atlassian's accessibility guidelines
+5. **Add Theme Support**: Ensure light/dark mode compatibility with design tokens
+6. **Test Responsively**: Verify components work across all screen sizes
+7. **Document Usage**: Add JSDoc comments and examples
 
-### Atlaskit Best Practices
-- Use Atlaskit's built-in theming system
-- Leverage Atlaskit's accessibility features
-- Follow Atlaskit's design tokens and spacing
-- Use Atlaskit's icon system when possible
-- Implement proper loading states with Atlaskit components
-- Use Atlaskit's form validation patterns
+### Atlassian Design System Best Practices
+- **Design with Clarity**: Build interfaces that are clear and confident
+- **Use Design Tokens**: Single sources of truth for design decisions
+- **Follow Content Standards**: Clear, concise, and conversational language
+- **Enable Accessibility**: Ensure everyone can interact and understand
+- **Leverage Modular Building Blocks**: Use flexible component composition
+- **Maintain Visual Hierarchy**: Use typography and spacing consistently
+- **Apply Brand Guidelines**: Distinguish brand and reinforce consistent experiences
 
 ### Quality Checklist
+- [ ] Follows [Atlassian Design System](https://atlassian.design/) guidelines
 - [ ] Uses Atlaskit components as base
+- [ ] Applies design tokens consistently
 - [ ] Supports light and dark themes
 - [ ] Includes proper TypeScript types
-- [ ] Has accessibility attributes (built into Atlaskit)
-- [ ] Works on mobile devices
-- [ ] Follows Atlaskit design system
-- [ ] Includes proper error states
-- [ ] Has loading states where needed
-- [ ] Uses consistent spacing and sizing
+- [ ] Meets accessibility standards
+- [ ] Works responsively on all devices
+- [ ] Uses clear, conversational language
+- [ ] Includes proper error and loading states
+- [ ] Maintains visual hierarchy
 
 ### Testing Requirements
 - Test in both light and dark modes
-- Verify Atlaskit's built-in accessibility features
+- Verify accessibility compliance
 - Check screen reader compatibility
 - Test on various screen sizes
 - Validate color contrast ratios
 - Test component interactions
-- Verify Atlaskit theme switching
+- Verify design token usage
+- Test responsive behavior
 
-## Atlaskit Resources
-- [Atlassian Design System](https://atlassian.design/)
-- [Atlaskit Components](https://atlaskit.atlassian.com/)
-- [Theme Documentation](https://atlassian.design/foundations/color/)
-- [Accessibility Guidelines](https://atlassian.design/foundations/accessibility/)
+## Atlassian Design System Resources
+- [Atlassian Design System](https://atlassian.design/) - Main design system documentation
+- [Design Foundations](https://atlassian.design/foundations) - Tokens, accessibility, content, spacing, color, typography
+- [Components](https://atlassian.design/components) - Flexible components and primitives
+- [Tools](https://atlassian.design/tools) - Figma libraries, ESLint plugin, styling standards
+- [Atlaskit Components](https://atlaskit.atlassian.com/) - React component library

@@ -69,10 +69,13 @@ When working on this project as an AI agent, please:
 - Write clear, self-documenting code
 - Add appropriate error handling
 - Include loading states for better UX
+- **Follow Atlassian Design System** from [Atlassian Design](https://atlassian.design/) for design with clarity and confidence
 - **Use Atlaskit** as the primary UI component library from [Atlassian](https://atlaskit.atlassian.com/)
-- **Create reusable components** with uniform design scheme using Atlaskit
-- **Support light & dark mode** for all components using Atlaskit's theme system
-- Use Tailwind CSS for custom styling alongside Atlaskit
+- **Apply design tokens** as single sources of truth for design decisions
+- **Create reusable components** following Atlassian's modular building blocks
+- **Support light & dark mode** using Atlassian's design token system
+- **Enable accessibility** for everyone to interact and understand
+- **Use clear, conversational language** following Atlassian's content standards
 
 #### Tool Development Process
 
