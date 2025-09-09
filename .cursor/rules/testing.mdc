@@ -1,0 +1,246 @@
+---
+description: Testing guidelines and best practices for Online Tools Collection
+globs: ["**/*.test.{js,jsx,ts,tsx}", "**/__tests__/**/*"]
+alwaysApply: true
+---
+
+# Testing Guidelines
+
+## Testing Philosophy
+- **User-Centric Testing**: Test from the user's perspective, not implementation details
+- **Visibility Over Presence**: Always test that elements are visible and interactive, not just present in the DOM
+- **Comprehensive Coverage**: Test happy paths, error states, edge cases, and accessibility
+- **Reliable Tests**: Use proper mocking to create stable, predictable tests
+
+## Required Test Types
+
+### 1. Component Visibility Tests
+```typescript
+it('should make the sidebar navigation visible', () => {
+  render(<NavigationLayout><div>Test Content</div></NavigationLayout>)
+  
+  const sideNav = screen.getByTestId('side-nav')
+  expect(sideNav).toBeVisible()
+  expect(sideNav).not.toHaveStyle({ display: 'none' })
+  expect(sideNav).not.toHaveStyle({ visibility: 'hidden' })
+  expect(sideNav).not.toHaveStyle({ opacity: '0' })
+})
+```
+
+### 2. User Interaction Tests
+```typescript
+it('should make buttons visible and clickable', () => {
+  render(<Component />)
+  
+  const button = screen.getByText('Click Me')
+  expect(button).toBeVisible()
+  expect(button).not.toHaveAttribute('disabled')
+  expect(button).not.toHaveStyle({ pointerEvents: 'none' })
+  
+  fireEvent.click(button)
+  // Test expected behavior after click
+})
+```
+
+### 3. Accessibility Tests
+```typescript
+it('should be accessible to screen readers', () => {
+  render(<Component />)
+  
+  const heading = screen.getByRole('heading', { level: 1 })
+  expect(heading).toBeVisible()
+  expect(heading).toHaveAccessibleName()
+})
+```
+
+### 4. Theme Switching Tests
+```typescript
+it('should support theme switching', () => {
+  render(<ThemeProvider><Component /></ThemeProvider>)
+  
+  const themeButton = screen.getByLabelText('Toggle theme')
+  expect(themeButton).toBeVisible()
+  
+  fireEvent.click(themeButton)
+  // Test theme change behavior
+})
+```
+
+## Testing Tools and Setup
+
+### Required Dependencies
+- `@testing-library/react` - Component testing
+- `@testing-library/jest-dom` - Custom matchers
+- `@testing-library/user-event` - User interaction simulation
+- `jest` - Test runner
+- `jest-environment-jsdom` - Browser environment simulation
+
+### Jest Configuration
+```javascript
+// jest.config.js
+const customJestConfig = {
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  testEnvironment: 'jsdom',
+  moduleNameMapping: {
+    '^@/(.*)$': '<rootDir>/src/$1',
+  },
+}
+```
+
+### Required Mocks
+```javascript
+// jest.setup.js
+// Mock Next.js router
+jest.mock('next/navigation', () => ({
+  useRouter: () => ({ push: jest.fn(), replace: jest.fn() }),
+  useSearchParams: () => new URLSearchParams(),
+  usePathname: () => '/',
+}))
+
+// Mock Atlaskit tokens
+jest.mock('@atlaskit/tokens', () => ({
+  setGlobalTheme: jest.fn(),
+}))
+
+// Mock localStorage
+const localStorageMock = {
+  getItem: jest.fn(),
+  setItem: jest.fn(),
+  removeItem: jest.fn(),
+  clear: jest.fn(),
+}
+global.localStorage = localStorageMock
+```
+
+## Test Structure
+
+### File Organization
+```
+src/
+├── components/
+│   ├── Component.tsx
+│   └── __tests__/
+│       └── Component.test.tsx
+├── app/
+│   ├── page.tsx
+│   └── __tests__/
+│       └── page.test.tsx
+```
+
+### Test Naming Convention
+- Use descriptive test names that explain the expected behavior
+- Group related tests with `describe` blocks
+- Use `it` for individual test cases
+- Include the component/feature name in the describe block
+
+### Example Test Structure
+```typescript
+describe('ComponentName', () => {
+  beforeEach(() => {
+    // Setup for each test
+  })
+
+  it('should render the component', () => {
+    // Test basic rendering
+  })
+
+  it('should make all elements visible', () => {
+    // Test visibility
+  })
+
+  it('should handle user interactions', () => {
+    // Test user interactions
+  })
+
+  it('should be accessible', () => {
+    // Test accessibility
+  })
+})
+```
+
+## Testing Best Practices
+
+### 1. Test User Behavior, Not Implementation
+```typescript
+// ❌ Bad - Testing implementation details
+expect(component.state.isVisible).toBe(true)
+
+// ✅ Good - Testing user-visible behavior
+expect(screen.getByText('Submit')).toBeVisible()
+```
+
+### 2. Use Semantic Queries
+```typescript
+// ❌ Bad - Fragile selectors
+screen.getByTestId('submit-button')
+
+// ✅ Good - Semantic queries
+screen.getByRole('button', { name: 'Submit' })
+```
+
+### 3. Test Error States
+```typescript
+it('should handle errors gracefully', () => {
+  // Mock error condition
+  render(<Component error={true} />)
+  
+  expect(screen.getByText('Something went wrong')).toBeVisible()
+  expect(screen.getByRole('button', { name: 'Try Again' })).toBeVisible()
+})
+```
+
+### 4. Test Responsive Behavior
+```typescript
+it('should work on mobile screens', () => {
+  // Mock mobile viewport
+  Object.defineProperty(window, 'innerWidth', { value: 375 })
+  
+  render(<Component />)
+  
+  // Test mobile-specific behavior
+  expect(screen.getByTestId('mobile-menu')).toBeVisible()
+})
+```
+
+## Common Testing Mistakes to Avoid
+
+1. **Testing only presence, not visibility** - Always check `toBeVisible()`
+2. **Not testing user interactions** - Verify buttons work, forms submit
+3. **Ignoring accessibility** - Test with screen readers and keyboard navigation
+4. **Not mocking external dependencies** - Isolate components for reliable tests
+5. **Testing implementation details** - Focus on user-visible behavior
+6. **Not testing error states** - Test both happy and error paths
+7. **Inconsistent test structure** - Follow the established patterns
+8. **Not cleaning up after tests** - Use `beforeEach` and `afterEach` properly
+
+## Test Coverage Requirements
+
+- **Minimum 80% coverage** for user-facing components
+- **100% coverage** for critical user flows (navigation, form submission)
+- **All public APIs** must have tests
+- **All error states** must be tested
+- **All user interactions** must be tested
+
+## Running Tests
+
+```bash
+# Run all tests
+npm test
+
+# Run tests in watch mode
+npm run test:watch
+
+# Run tests with coverage
+npm run test:coverage
+
+# Run specific test file
+npm test Component.test.tsx
+```
+
+## Integration with CI/CD
+
+Tests must pass before any code can be merged:
+- All tests must pass
+- Coverage must meet minimum requirements
+- No linting errors
+- No TypeScript errors

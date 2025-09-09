@@ -105,6 +105,18 @@ static process(input: ToolInput): ToolOutput | ToolError
 - **Follow responsive design** principles for all screen sizes
 - **Provide clear feedback** with proper loading states and error messages
 
+### Testing Rules
+- **Write comprehensive tests** for all components and functionality
+- **Test for visibility** - Ensure elements are not just in the DOM but actually visible
+- **Test user interactions** - Verify buttons are clickable and forms are functional
+- **Test accessibility** - Ensure components work with screen readers and keyboard navigation
+- **Test responsive behavior** - Verify components work on different screen sizes
+- **Test theme switching** - Ensure light/dark mode works correctly
+- **Use React Testing Library** for component testing with user-centric queries
+- **Mock external dependencies** properly to isolate component behavior
+- **Test error states** and edge cases, not just happy paths
+- **Maintain high test coverage** for critical user-facing functionality
+
 ## Common Mistakes to Avoid
 
 1. **Creating multi-purpose tools** - Stick to single responsibility
@@ -119,6 +131,10 @@ static process(input: ToolInput): ToolOutput | ToolError
 10. **Not using design tokens** - Apply design tokens for consistent spacing, color, and typography
 11. **Missing dark mode support** - All components must support both themes
 12. **Poor accessibility** - Follow Atlassian's accessibility guidelines
+13. **Testing only presence, not visibility** - Always test that elements are actually visible and interactive
+14. **Not testing user interactions** - Verify buttons work, forms submit, and navigation functions
+15. **Ignoring responsive testing** - Test components on different screen sizes
+16. **Not mocking external dependencies** - Isolate components for reliable testing
 
 ## Questions to Ask Before Implementing
 
@@ -134,3 +150,7 @@ static process(input: ToolInput): ToolOutput | ToolError
 10. **Are design tokens used for consistent spacing, color, and typography?**
 11. **Does the tool support both light and dark modes?**
 12. **Is accessibility properly implemented following Atlassian guidelines?**
+13. **Are comprehensive tests written for all functionality?**
+14. **Do tests verify visibility and user interactions, not just DOM presence?**
+15. **Are all user-facing components tested for accessibility?**
+16. **Is the component tested on different screen sizes?**
