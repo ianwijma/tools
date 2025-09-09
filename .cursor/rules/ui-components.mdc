@@ -159,21 +159,25 @@ Follow [Atlassian's component guidelines](https://atlassian.design/components) w
 - **Stack**: Flexbox-based primitive for vertical layout of direct children
 
 ### Implementation Approach
+- **ALWAYS check Atlaskit documentation first** before replacing components with HTML
 - Use Atlaskit components directly when they meet requirements
 - Create wrapper components only when customization is needed
 - Follow Atlassian's design principles for consistent experiences
 - Leverage design tokens for spacing, color, and typography
+- **NEVER replace Atlaskit components with HTML without consulting documentation**
 
 ## Implementation Guidelines
 
 ### Component Development Process
 1. **Follow Atlassian Design System**: Use [Atlassian's design guidelines](https://atlassian.design/) as the foundation
-2. **Use Atlaskit Components**: Check if Atlaskit has the component you need
-3. **Apply Design Tokens**: Use spacing, color, and typography tokens consistently
-4. **Ensure Accessibility**: Follow Atlassian's accessibility guidelines
-5. **Add Theme Support**: Ensure light/dark mode compatibility with design tokens
-6. **Test Responsively**: Verify components work across all screen sizes
-7. **Document Usage**: Add JSDoc comments and examples
+2. **Check Atlaskit Documentation First**: Always consult [Atlaskit documentation](https://atlaskit.atlassian.com/) before implementing components
+3. **Use Atlaskit Components**: Check if Atlaskit has the component you need and verify correct usage
+4. **Verify Component Availability**: Check [Atlassian Design System Components](https://atlassian.design/components) for available components
+5. **Apply Design Tokens**: Use spacing, color, and typography tokens consistently
+6. **Ensure Accessibility**: Follow Atlassian's accessibility guidelines
+7. **Add Theme Support**: Ensure light/dark mode compatibility with design tokens
+8. **Test Responsively**: Verify components work across all screen sizes
+9. **Document Usage**: Add JSDoc comments and examples
 
 ### Atlassian Design System Best Practices
 - **Design with Clarity**: Build interfaces that are clear and confident
@@ -185,8 +189,11 @@ Follow [Atlassian's component guidelines](https://atlassian.design/components) w
 - **Apply Brand Guidelines**: Distinguish brand and reinforce consistent experiences
 
 ### Quality Checklist
+- [ ] **Checked Atlaskit documentation** before implementing components
+- [ ] **Verified component availability** in [Atlassian Design System Components](https://atlassian.design/components)
+- [ ] **Used correct Atlaskit imports** and component usage
 - [ ] Follows [Atlassian Design System](https://atlassian.design/) guidelines
-- [ ] Uses Atlaskit components as base
+- [ ] Uses Atlaskit components as base (not replaced with HTML)
 - [ ] Applies design tokens consistently
 - [ ] Supports light and dark themes
 - [ ] Includes proper TypeScript types
@@ -207,8 +214,42 @@ Follow [Atlassian's component guidelines](https://atlassian.design/components) w
 - Test responsive behavior
 
 ## Atlassian Design System Resources
+
+### Primary Documentation Sources
 - [Atlassian Design System](https://atlassian.design/) - Main design system documentation
+- [Atlaskit Components](https://atlaskit.atlassian.com/) - React component library documentation
 - [Design Foundations](https://atlassian.design/foundations) - Tokens, accessibility, content, spacing, color, typography
 - [Components](https://atlassian.design/components) - Flexible components and primitives
 - [Tools](https://atlassian.design/tools) - Figma libraries, ESLint plugin, styling standards
-- [Atlaskit Components](https://atlaskit.atlassian.com/) - React component library
+
+### Documentation Checking Requirements
+**BEFORE implementing any UI component:**
+1. **Check [Atlaskit documentation](https://atlaskit.atlassian.com/)** for available components
+2. **Verify component imports** and usage patterns
+3. **Check [Atlassian Design System Components](https://atlassian.design/components)** for design guidelines
+4. **Review component props and API** in the documentation
+5. **Only use HTML elements** if Atlaskit doesn't provide the needed component or primitive
+
+## Troubleshooting Atlaskit Components
+
+### When Atlaskit Components Don't Work
+If you encounter issues with Atlaskit components:
+
+1. **Check Documentation First**: Always consult [Atlaskit documentation](https://atlaskit.atlassian.com/) for the specific component
+2. **Verify Installation**: Ensure the component package is installed via npm
+3. **Check Import Syntax**: Verify correct import statements (default vs named imports)
+4. **Review Component API**: Check available props and usage examples
+5. **Check Version Compatibility**: Ensure component versions are compatible with your React version
+
+### When to Use HTML Instead of Atlaskit
+**ONLY use HTML elements when:**
+- Atlaskit doesn't provide the specific component you need
+- You've verified the component doesn't exist in the documentation
+- You've confirmed the component is deprecated or unavailable
+- You need custom functionality that Atlaskit doesn't support
+
+**NEVER use HTML when:**
+- Atlaskit provides an equivalent component
+- You haven't checked the documentation thoroughly
+- You're trying to avoid learning the proper Atlaskit API
+- You want to "simplify" without understanding the component
