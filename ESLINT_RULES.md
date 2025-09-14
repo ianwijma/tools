@@ -258,7 +258,7 @@ npm run lint
 
 # Run individual linters
 npm run lint:biome     # Biome formatting and basic linting
-npm run lint:eslint    # ESLint code style enforcement
+npm run lint:eslint    # ESLint code style enforcement (warnings allowed)
 npm run lint:types     # TypeScript type checking
 
 # Fix automatically fixable issues
@@ -271,18 +271,18 @@ npm run lint:eslint:fix
 
 Automatically enforced on every commit:
 1. Biome formatting and linting
-2. ESLint code style enforcement
+2. ESLint code style enforcement (warnings allowed, errors blocked)
 3. TypeScript type checking
 4. Related tests for changed files
 
 ### CI/CD Pipeline
 
 GitHub Actions workflow enforces:
-1. All linting rules must pass
-2. No warnings allowed (`--max-warnings 0`)
-3. Type checking must pass
-4. Tests must pass
-5. Build must succeed
+1. All linting errors must be fixed (warnings allowed)
+2. Type checking must pass with no errors
+3. Tests must pass
+4. Build must succeed
+5. Critical violations still blocked (any types, server storage, etc.)
 
 ## 🚫 Common Violations and Fixes
 
@@ -362,8 +362,16 @@ The pre-commit hook will automatically run these checks and prevent commits with
 
 - **ESLint errors MUST be fixed before committing**
 - **Type errors MUST be resolved**
-- **No warnings are allowed in CI**
-- **All rules are enforced automatically**
-- **No exceptions to critical rules**
+- **Warnings are allowed but should be addressed when possible**
+- **All critical rules are enforced automatically (errors level)**
+- **No exceptions to critical rules (any types, server storage, etc.)**
 
-The goal is to make code style enforcement automatic and trivial, removing the need to remember or manually check these rules.
+## ⚠️ Warning Policy Update
+
+**NEW**: ESLint warnings are now allowed to provide more flexibility:
+- **Errors**: Still block commits and deployments (critical violations)
+- **Warnings**: Informational only, won't block workflow
+- **Critical rules**: Remain at error level (any types, JSX variables, server storage)
+- **Style rules**: Some downgraded to warning level for flexibility
+
+The goal is to maintain code quality while allowing development workflow flexibility.

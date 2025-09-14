@@ -1,0 +1,28 @@
+# Development Docker Compose Configuration
+version: '3.8'
+
+services:
+  app-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: tools-app-dev
+    ports:
+      - "3000:3000"
+    volumes:
+      # Mount source code for hot reloading
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - CHOKIDAR_USEPOLLING=true
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    # Development doesn't need strict resource limits
+    deploy:
+      resources:
+        limits:
+          memory: 1G

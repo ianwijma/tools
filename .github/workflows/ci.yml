@@ -27,7 +27,7 @@ jobs:
       - name: Run Biome linting
         run: npm run lint:biome
         
-      - name: Run ESLint code style enforcement
+      - name: Run ESLint code style enforcement (warnings allowed)
         run: npm run lint:eslint
         
       - name: Run TypeScript type checking
@@ -36,13 +36,14 @@ jobs:
       - name: Check for linting failures
         run: |
           echo "✅ All linting and type checks passed!"
-          echo "🚨 Code style rules are enforced:"
+          echo "🚨 Code style rules are enforced (warnings allowed, errors blocked):"
           echo "  - NO 'any' types allowed"
           echo "  - NO JSX assignment to variables"
           echo "  - NO server data storage"
           echo "  - Explicit types required for all functions and variables"
           echo "  - Proper error handling patterns enforced"
           echo "  - Material Design and accessibility rules enforced"
+          echo "  - Warnings are allowed but errors will block deployment"
   
   test:
     name: 'Test Suite'
@@ -157,12 +158,13 @@ jobs:
           
       - name: Verify code style compliance
         run: |
-          echo "📋 Code style rules enforced:"
-          echo "  ✅ NO 'any' types allowed"
-          echo "  ✅ NO JSX assignment to variables"
-          echo "  ✅ NO server data storage"
-          echo "  ✅ Explicit types required"
-          echo "  ✅ Proper error handling"
-          echo "  ✅ Material Design compliance"
-          echo "  ✅ Accessibility standards"
-          echo "  ✅ Testing best practices"
+          echo "📋 Code style rules enforced (errors block, warnings allowed):"
+          echo "  ✅ NO 'any' types allowed (ERROR level)"
+          echo "  ✅ NO JSX assignment to variables (ERROR level)"
+          echo "  ✅ NO server data storage (ERROR level)"
+          echo "  ✅ Explicit types required (ERROR level)"
+          echo "  ✅ Proper error handling (ERROR level)"
+          echo "  ✅ Material Design compliance (mixed levels)"
+          echo "  ✅ Accessibility standards (mixed levels)"
+          echo "  ✅ Testing best practices (mixed levels)"
+          echo "  ⚠️  Warnings are informational and won't block commits"

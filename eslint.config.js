@@ -406,4 +406,19 @@ export default [
       "import/no-unresolved": "off",
     },
   },
+
+  // Utility files (healthcheck, etc.)
+  {
+    files: ["healthcheck.js"],
+    languageOptions: {
+      ecmaVersion: 2021,
+      sourceType: "module",
+      globals: {
+        ...globals.node,
+      },
+    },
+    rules: {
+      "no-console": "off", // Allow console in utility scripts
+    },
+  },
 ];

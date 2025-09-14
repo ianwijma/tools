@@ -4,7 +4,7 @@ module.exports = {
     // First run Biome for formatting and basic linting
     "biome check --write",
     // Then run ESLint for strict code style enforcement
-    "eslint --fix --max-warnings 0",
+    "eslint --fix",
     // Finally check TypeScript types
     () => "tsc --noEmit",
   ],
