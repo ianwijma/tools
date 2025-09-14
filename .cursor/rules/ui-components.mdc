@@ -182,6 +182,7 @@ Follow [Material Design's component guidelines](https://m3.material.io/component
 7. **Add Theme Support**: Ensure light/dark mode compatibility with design tokens
 8. **Test Responsively**: Verify components work across all screen sizes
 9. **Document Usage**: Add JSDoc comments and examples
+10. **🚨 NEVER assign JSX to variables** - Extract to separate components or inline directly
 
 ### Material Design Best Practices
 - **Design with Clarity**: Build interfaces that are clear and confident

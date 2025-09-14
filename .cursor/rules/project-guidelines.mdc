@@ -87,6 +87,9 @@ Each tool should have **one clear, focused purpose**:
 - Handle errors gracefully
 - Use 'use client' directive for client components
 - Follow Next.js App Router patterns
+- **NEVER assign JSX to variables** - Extract to separate components or inline directly
+- **Component extraction preferred** - Create dedicated components for reusable JSX
+- **Inline JSX allowed** - For simple, non-reusable JSX elements
 
 ### Error Handling Rules
 ```typescript
@@ -158,6 +161,7 @@ static process(input: ToolInput): ToolOutput | ToolError
 20. **Untyped return values** - ALL functions must have explicit return types
 21. **Untyped React components** - ALL component props must be properly typed
 22. **Untyped state variables** - ALL useState hooks must have explicit type annotations
+23. **🚨 Assigning JSX to variables** - NEVER ALLOWED, extract to components or inline directly
 
 ## Questions to Ask Before Implementing
 
@@ -184,3 +188,4 @@ static process(input: ToolInput): ToolOutput | ToolError
 21. **Are ALL useState hooks explicitly typed?**
 22. **Are ALL interfaces and types properly defined?**
 23. **Is the TypeScript configuration strict?**
+24. **🚨 Are JSX elements properly extracted to components or inlined?** (No JSX in variables)
