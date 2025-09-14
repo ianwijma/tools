@@ -9,6 +9,11 @@ export interface Tool {
   href: string;
 }
 
+export interface ToolCategory {
+  name: string;
+  tools: Tool[];
+}
+
 export interface ToolError {
   message: string;
   code: string;

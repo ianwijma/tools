@@ -2,22 +2,24 @@
 
 import {
   Box,
+  Divider,
   List,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  ListSubheader,
   Toolbar,
   Typography,
 } from '@mui/material';
-import type { Tool } from '@/types';
+import type { ToolCategory } from '@/types';
 
 interface DrawerContentProps {
-  tools: Tool[];
+  categories: ToolCategory[];
 }
 
 export default function DrawerContent({
-  tools,
+  categories,
 }: DrawerContentProps): JSX.Element {
   return (
     <Box>
@@ -31,8 +33,8 @@ export default function DrawerContent({
           Online Tools
         </Typography>
       </Toolbar>
-      <List>
-        {tools.length === 0 ? (
+      {categories.length === 0 ? (
+        <List>
           <ListItem>
             <ListItemText
               primary="No tools available yet"
@@ -47,35 +49,60 @@ export default function DrawerContent({
               }}
             />
           </ListItem>
-        ) : (
-          tools.map((tool: Tool) => (
-            <ListItem key={tool.name} disablePadding>
-              <ListItemButton
-                component="a"
-                href={tool.href}
-                sx={{
-                  '&:hover': {
-                    backgroundColor: 'action.hover',
-                  },
-                }}
-              >
-                <ListItemIcon>{tool.icon}</ListItemIcon>
-                <ListItemText
-                  primary={tool.name}
-                  secondary={tool.description}
-                  primaryTypographyProps={{
-                    fontSize: '0.9rem',
-                    fontWeight: 500,
+        </List>
+      ) : (
+        categories.map((category, categoryIndex) => (
+          <Box key={category.name}>
+            <List
+              subheader={
+                <ListSubheader
+                  component="div"
+                  sx={{
+                    backgroundColor: 'transparent',
+                    fontWeight: 600,
+                    fontSize: '0.875rem',
+                    color: 'primary.main',
+                    lineHeight: '2.5rem',
                   }}
-                  secondaryTypographyProps={{
-                    fontSize: '0.75rem',
-                  }}
-                />
-              </ListItemButton>
-            </ListItem>
-          ))
-        )}
-      </List>
+                >
+                  {category.name}
+                </ListSubheader>
+              }
+            >
+              {category.tools.map((tool) => (
+                <ListItem key={tool.name} disablePadding>
+                  <ListItemButton
+                    component="a"
+                    href={tool.href}
+                    sx={{
+                      pl: 2,
+                      '&:hover': {
+                        backgroundColor: 'action.hover',
+                      },
+                    }}
+                  >
+                    <ListItemIcon>{tool.icon}</ListItemIcon>
+                    <ListItemText
+                      primary={tool.name}
+                      secondary={tool.description}
+                      primaryTypographyProps={{
+                        fontSize: '0.9rem',
+                        fontWeight: 500,
+                      }}
+                      secondaryTypographyProps={{
+                        fontSize: '0.75rem',
+                      }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </List>
+            {categoryIndex < categories.length - 1 && (
+              <Divider sx={{ mx: 2, my: 1 }} />
+            )}
+          </Box>
+        ))
+      )}
     </Box>
   );
 }

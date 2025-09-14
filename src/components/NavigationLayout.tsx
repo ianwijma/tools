@@ -1,6 +1,7 @@
 'use client';
 
 import {
+  Gif as GifIcon,
   GitHub as GitHubIcon,
   Image as ImageIcon,
   DataObject as JsonIcon,
@@ -15,30 +16,47 @@ import {
   Typography,
 } from '@mui/material';
 import { useState } from 'react';
-import type { NavigationLayoutProps, Tool } from '@/types';
+import type { NavigationLayoutProps, ToolCategory } from '@/types';
 import DrawerContent from './DrawerContent';
 
 const drawerWidth: number = 280;
 
-// Tools will be added here as they are implemented
-const tools: Tool[] = [
+// Tools organized by categories
+const toolCategories: ToolCategory[] = [
   {
-    name: 'JSON Beautifier',
-    description: 'Transform minified JSON into clean, readable format',
-    icon: <JsonIcon />,
-    href: '/json-beautifier',
+    name: 'Text Manipulation',
+    tools: [
+      {
+        name: 'JSON Beautifier',
+        description: 'Transform minified JSON into clean, readable format',
+        icon: <JsonIcon />,
+        href: '/json-beautifier',
+      },
+      {
+        name: 'JSON Uglifier',
+        description: 'Minimize JSON by removing all unnecessary whitespace',
+        icon: <JsonIcon />,
+        href: '/json-uglifier',
+      },
+    ],
   },
   {
-    name: 'JSON Uglifier',
-    description: 'Minimize JSON by removing all unnecessary whitespace',
-    icon: <JsonIcon />,
-    href: '/json-uglifier',
-  },
-  {
-    name: 'Image Converter',
-    description: 'Convert images between formats with bulk processing support',
-    icon: <ImageIcon />,
-    href: '/image-converter',
+    name: 'Image Manipulation',
+    tools: [
+      {
+        name: 'Image Converter',
+        description:
+          'Convert images between formats with bulk processing support',
+        icon: <ImageIcon />,
+        href: '/image-converter',
+      },
+      {
+        name: 'GIF Editor',
+        description: 'Create animated GIFs from images with timeline control',
+        icon: <GifIcon />,
+        href: '/gif-editor',
+      },
+    ],
   },
 ];
 
@@ -106,7 +124,7 @@ export default function NavigationLayout({
             },
           }}
         >
-          <DrawerContent tools={tools} />
+          <DrawerContent categories={toolCategories} />
         </Drawer>
         <Drawer
           variant="permanent"
@@ -119,7 +137,7 @@ export default function NavigationLayout({
           }}
           open
         >
-          <DrawerContent tools={tools} />
+          <DrawerContent categories={toolCategories} />
         </Drawer>
       </Box>
 
