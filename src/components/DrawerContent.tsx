@@ -12,6 +12,7 @@ import {
   Toolbar,
   Typography,
 } from '@mui/material';
+import Link from 'next/link';
 import type { ToolCategory } from '@/types';
 
 interface DrawerContentProps {
@@ -72,7 +73,7 @@ export default function DrawerContent({
               {category.tools.map((tool) => (
                 <ListItem key={tool.name} disablePadding>
                   <ListItemButton
-                    component="a"
+                    component={Link}
                     href={tool.href}
                     sx={{
                       pl: 2,
