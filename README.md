@@ -66,6 +66,21 @@ The development server is configured to always run on port 3000.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## 📚 Documentation
+
+For detailed documentation, see the [`docs/`](./docs/) directory:
+
+- **[Architecture & Setup](./docs/README.md#-architecture--setup)** - Project architecture and setup guides
+- **[Code Style & Quality](./docs/README.md#-code-style--quality)** - ESLint rules, formatting, and code standards
+- **[Deployment & Infrastructure](./docs/README.md#-deployment--infrastructure)** - Docker and deployment guides
+- **[Contributing Guidelines](./docs/CONTRIBUTING.md)** - How to contribute to the project
+
+### Quick Links
+- [Contributing Guide](./docs/CONTRIBUTING.md) - Start here for new contributors
+- [Architecture Overview](./docs/ARCHITECTURE.md) - Project design and patterns
+- [ESLint Rules](./docs/ESLINT_RULES.md) - Code style enforcement
+- [Docker Deployment](./docs/DOCKER_DEPLOYMENT.md) - Deployment with Docker
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
