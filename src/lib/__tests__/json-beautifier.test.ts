@@ -370,6 +370,7 @@ describe('JsonBeautifier', () => {
       expect(presets.readable).toBeDefined();
       expect(presets.compact).toBeDefined();
       expect(presets.aligned).toBeDefined();
+      expect(presets.uglify).toBeDefined();
       expect(presets.custom).toBeDefined();
     });
 
@@ -391,6 +392,41 @@ describe('JsonBeautifier', () => {
       const options = JsonBeautifier.getPreset('aligned');
       expect(options.alignColons).toBe(true);
       expect(options.sortKeys).toBe(true);
+    });
+
+    it('should return correct options for uglify preset', () => {
+      const options = JsonBeautifier.getPreset('uglify');
+      expect(options.indentSize).toBe(0);
+      expect(options.spacesAroundColon).toBe(false);
+      expect(options.spacesAroundComma).toBe(false);
+      expect(options.insertFinalNewline).toBe(false);
+      expect(options.compactArrays).toBe(true);
+      expect(options.compactObjects).toBe(true);
+    });
+
+    it('should produce minimized JSON with uglify preset', () => {
+      const testJson =
+        '{\n  "name": "test",\n  "values": [\n    1,\n    2,\n    3\n  ],\n  "nested": {\n    "key": "value"\n  }\n}';
+
+      const result = JsonBeautifier.process({
+        jsonString: testJson,
+        options: JsonBeautifier.getPreset('uglify'),
+      });
+
+      expect('result' in result).toBe(true);
+      if ('result' in result) {
+        // Should be minimized - no extra whitespace
+        expect(result.result).not.toContain('\n');
+        expect(result.result).not.toContain('  ');
+        expect(result.result).toContain(
+          '{"name":"test","values":[1,2,3],"nested":{"key":"value"}}',
+        );
+
+        // Should be significantly smaller than original
+        expect(result.metadata.beautifiedSize).toBeLessThan(
+          result.metadata.originalSize,
+        );
+      }
     });
 
     it('should produce different results for different presets', () => {

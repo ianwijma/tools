@@ -59,6 +59,7 @@ export type JsonBeautifierPreset =
   | 'readable' // Extra readable with generous spacing
   | 'compact' // Compact but still readable
   | 'aligned' // Aligned colons for better readability
+  | 'uglify' // Minimize JSON by removing all unnecessary whitespace
   | 'custom'; // User-defined settings
 
 export interface JsonBeautifierPresetConfig {

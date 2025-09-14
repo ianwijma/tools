@@ -100,6 +100,23 @@ export class JsonBeautifier {
         alignColons: true,
       },
     },
+    uglify: {
+      name: 'Uglify',
+      description: 'Minimize JSON by removing all unnecessary whitespace',
+      options: {
+        indentType: 'spaces',
+        indentSize: 0,
+        sortKeys: false,
+        insertFinalNewline: false,
+        preserveArrays: true,
+        spacesAroundColon: false,
+        spacesAroundComma: false,
+        removeTrailingCommas: true,
+        compactArrays: true,
+        compactObjects: true,
+        alignColons: false,
+      },
+    },
     custom: {
       name: 'Custom',
       description: 'User-defined beautification settings',
