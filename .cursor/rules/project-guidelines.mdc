@@ -94,13 +94,13 @@ static process(input: ToolInput): ToolOutput | ToolError
 ```
 
 ### UI/UX Rules
-- **Follow Atlassian Design System** from [Atlassian Design](https://atlassian.design/) for design with clarity and confidence
-- **Use Atlaskit** as the primary UI component library from [Atlassian](https://atlaskit.atlassian.com/)
-- **Apply design tokens** as single sources of truth for design decisions
-- **Create reusable components** following Atlassian's modular building blocks
-- **Support light & dark mode** using Atlassian's design token system
+- **Follow Google's Material Design** from [Material Design](https://m3.material.io/) for design with clarity and confidence
+- **Use Material UI (MUI)** as the primary UI component library from [MUI](https://mui.com/)
+- **Apply Material Design tokens** as single sources of truth for design decisions
+- **Create reusable components** following Material Design's modular building blocks
+- **Support light & dark mode** using Material Design's theme system
 - **Enable accessibility** for everyone to interact and understand
-- **Use clear, conversational language** following Atlassian's content standards
+- **Use clear, conversational language** following Material Design's content standards
 - **Maintain visual hierarchy** with consistent typography and spacing
 - **Follow responsive design** principles for all screen sizes
 - **Provide clear feedback** with proper loading states and error messages
@@ -127,10 +127,10 @@ static process(input: ToolInput): ToolOutput | ToolError
 6. **Ignoring accessibility** - Ensure tools work for all users
 7. **Not testing edge cases** - Test with various inputs
 8. **Poor documentation** - Document what the tool does and doesn't do
-9. **Not following Atlassian Design System** - Use [Atlassian Design](https://atlassian.design/) guidelines
-10. **Not using design tokens** - Apply design tokens for consistent spacing, color, and typography
+9. **Not following Material Design** - Use [Material Design](https://m3.material.io/) guidelines
+10. **Not using design tokens** - Apply Material Design tokens for consistent spacing, color, and typography
 11. **Missing dark mode support** - All components must support both themes
-12. **Poor accessibility** - Follow Atlassian's accessibility guidelines
+12. **Poor accessibility** - Follow Material Design's accessibility guidelines
 13. **Testing only presence, not visibility** - Always test that elements are actually visible and interactive
 14. **Not testing user interactions** - Verify buttons work, forms submit, and navigation functions
 15. **Ignoring responsive testing** - Test components on different screen sizes
@@ -146,10 +146,10 @@ static process(input: ToolInput): ToolOutput | ToolError
 6. **How will users know what this tool does?**
 7. **What are the edge cases to test?**
 8. **Is the naming descriptive and specific?**
-9. **Does the UI follow Atlassian Design System guidelines?**
-10. **Are design tokens used for consistent spacing, color, and typography?**
+9. **Does the UI follow Material Design guidelines?**
+10. **Are Material Design tokens used for consistent spacing, color, and typography?**
 11. **Does the tool support both light and dark modes?**
-12. **Is accessibility properly implemented following Atlassian guidelines?**
+12. **Is accessibility properly implemented following Material Design guidelines?**
 13. **Are comprehensive tests written for all functionality?**
 14. **Do tests verify visibility and user interactions, not just DOM presence?**
 15. **Are all user-facing components tested for accessibility?**

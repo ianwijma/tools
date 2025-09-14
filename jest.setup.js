@@ -58,7 +58,8 @@ Object.defineProperty(document, 'documentElement', {
   writable: true,
 })
 
-// Mock Atlaskit tokens setGlobalTheme
-jest.mock('@atlaskit/tokens', () => ({
-  setGlobalTheme: jest.fn(),
+// Mock MUI theme
+jest.mock('@mui/material/styles', () => ({
+  createTheme: jest.fn(() => ({})),
+  ThemeProvider: ({ children }: { children: React.ReactNode }) => children,
 }))

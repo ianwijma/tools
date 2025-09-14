@@ -1,24 +1,18 @@
----
-description: UI component standards using Atlaskit with light and dark mode support
-globs: ["src/components/**/*", "src/app/**/*"]
-alwaysApply: false
----
-
-# UI Component Standards with Atlaskit
+# UI Component Standards with Material UI
 
 ## Design System Principles
 
-### Atlassian Design System Integration
-This project uses [Atlassian's Design System](https://atlassian.design/) and [Atlaskit](https://atlaskit.atlassian.com/) as the primary UI component library for:
-- **Design with Clarity**: Following Atlassian's design principles for clear, confident interfaces
+### Material Design Integration
+This project uses [Google's Material Design](https://m3.material.io/) and [Material UI (MUI)](https://mui.com/) as the primary UI component library for:
+- **Design with Clarity**: Following Material Design principles for clear, confident interfaces
 - **Foundational Guidelines**: Using design tokens and modular building blocks
 - **Accessibility**: Built-in accessibility features enabling everyone to interact and navigate
 - **Theme Support**: Native light and dark mode support with design tokens
 - **Professional Quality**: Enterprise-grade components with consistent experiences
 - **TypeScript Support**: Full TypeScript definitions included
 
-### Atlassian Design Foundations
-All UI components should follow [Atlassian's Design System](https://atlassian.design/) foundations:
+### Material Design Foundations
+All UI components should follow [Material Design](https://m3.material.io/) foundations:
 
 #### Design Tokens
 - **Single sources of truth** to name and store design decisions
@@ -36,24 +30,24 @@ All UI components should follow [Atlassian's Design System](https://atlassian.de
 
 ### Light & Dark Mode Support
 All components must support both light and dark modes:
-- Use Atlaskit's built-in theme system
+- Use MUI's built-in theme system
 - Implement proper contrast ratios for accessibility
 - Test components in both light and dark themes
 - Provide smooth transitions between themes
 
-## Atlaskit Setup
+## Material UI Setup
 
 ### Installation
-Install the core Atlaskit components following [Atlassian's component guidelines](https://atlassian.design/components):
+Install the core Material UI components following [MUI's component guidelines](https://mui.com/material-ui/getting-started/installation/):
 ```bash
 # Core components
-npm install @atlaskit/button @atlaskit/textfield @atlaskit/card @atlaskit/badge @atlaskit/flag @atlaskit/box @atlaskit/inline @atlaskit/stack
+npm install @mui/material @emotion/react @emotion/styled
 
-# Theme and styling
-npm install @atlaskit/theme @atlaskit/theme-provider
+# Icons
+npm install @mui/icons-material
 
 # Additional components as needed
-npm install @atlaskit/modal-dialog @atlaskit/dropdown-menu @atlaskit/tabs @atlaskit/tooltip
+npm install @mui/lab @mui/x-data-grid @mui/x-date-pickers
 ```
 
 ### Theme Provider Setup
@@ -61,7 +55,8 @@ npm install @atlaskit/modal-dialog @atlaskit/dropdown-menu @atlaskit/tabs @atlas
 // src/components/ThemeProvider.tsx
 'use client';
 
-import { ThemeProvider as AtlaskitThemeProvider } from '@atlaskit/theme-provider';
+import { ThemeProvider as MuiThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 import { createContext, useContext, useEffect, useState } from 'react';
 
 type Theme = 'light' | 'dark' | 'auto';
@@ -106,6 +101,14 @@ export function ThemeProvider({
     root.classList.add(theme);
   }, [theme]);
 
+  const muiTheme = createTheme({
+    palette: {
+      mode: theme === 'auto' 
+        ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+        : theme,
+    },
+  });
+
   const value = {
     theme,
     setTheme: (theme: Theme) => {
@@ -116,9 +119,10 @@ export function ThemeProvider({
 
   return (
     <ThemeProviderContext.Provider {...props} value={value}>
-      <AtlaskitThemeProvider mode={theme === 'auto' ? 'light' : theme}>
+      <MuiThemeProvider theme={muiTheme}>
+        <CssBaseline />
         {children}
-      </AtlaskitThemeProvider>
+      </MuiThemeProvider>
     </ThemeProviderContext.Provider>
   );
 }
@@ -135,7 +139,7 @@ export const useTheme = () => {
 
 ## Component Library Structure
 
-### Atlaskit Base Components
+### Material UI Base Components
 ```
 src/components/ui/
 ```
@@ -146,40 +150,40 @@ src/components/tools/
 └── [ToolName]Tool.tsx   # Individual tool components
 ```
 
-## Atlassian Design System Components
+## Material Design Components
 
-Follow [Atlassian's component guidelines](https://atlassian.design/components) when implementing UI components:
+Follow [Material Design's component guidelines](https://m3.material.io/components) when implementing UI components:
 
 ### Core Components
 - **Button**: Triggers events or actions, letting users know what happens next
-- **Badge**: Visual indicators for numeric values like tallies and scores  
-- **Flag**: Confirmations, alerts, and acknowledgments with minimal user interaction
+- **Chip**: Visual indicators for tags, categories, and selections
+- **Alert**: Confirmations, alerts, and acknowledgments with minimal user interaction
 - **Box**: Generic container primitive with managed access to design tokens
-- **Inline**: Flexbox-based primitive for horizontal layout of direct children
-- **Stack**: Flexbox-based primitive for vertical layout of direct children
+- **Stack**: Flexbox-based primitive for layout of direct children
+- **Grid**: Responsive grid system for layout
 
 ### Implementation Approach
-- **ALWAYS check Atlaskit documentation first** before replacing components with HTML
-- Use Atlaskit components directly when they meet requirements
+- **ALWAYS check MUI documentation first** before replacing components with HTML
+- Use MUI components directly when they meet requirements
 - Create wrapper components only when customization is needed
-- Follow Atlassian's design principles for consistent experiences
+- Follow Material Design principles for consistent experiences
 - Leverage design tokens for spacing, color, and typography
-- **NEVER replace Atlaskit components with HTML without consulting documentation**
+- **NEVER replace MUI components with HTML without consulting documentation**
 
 ## Implementation Guidelines
 
 ### Component Development Process
-1. **Follow Atlassian Design System**: Use [Atlassian's design guidelines](https://atlassian.design/) as the foundation
-2. **Check Atlaskit Documentation First**: Always consult [Atlaskit documentation](https://atlaskit.atlassian.com/) before implementing components
-3. **Use Atlaskit Components**: Check if Atlaskit has the component you need and verify correct usage
-4. **Verify Component Availability**: Check [Atlassian Design System Components](https://atlassian.design/components) for available components
+1. **Follow Material Design**: Use [Material Design guidelines](https://m3.material.io/) as the foundation
+2. **Check MUI Documentation First**: Always consult [MUI documentation](https://mui.com/) before implementing components
+3. **Use MUI Components**: Check if MUI has the component you need and verify correct usage
+4. **Verify Component Availability**: Check [Material Design Components](https://m3.material.io/components) for available components
 5. **Apply Design Tokens**: Use spacing, color, and typography tokens consistently
-6. **Ensure Accessibility**: Follow Atlassian's accessibility guidelines
+6. **Ensure Accessibility**: Follow Material Design's accessibility guidelines
 7. **Add Theme Support**: Ensure light/dark mode compatibility with design tokens
 8. **Test Responsively**: Verify components work across all screen sizes
 9. **Document Usage**: Add JSDoc comments and examples
 
-### Atlassian Design System Best Practices
+### Material Design Best Practices
 - **Design with Clarity**: Build interfaces that are clear and confident
 - **Use Design Tokens**: Single sources of truth for design decisions
 - **Follow Content Standards**: Clear, concise, and conversational language
@@ -189,11 +193,11 @@ Follow [Atlassian's component guidelines](https://atlassian.design/components) w
 - **Apply Brand Guidelines**: Distinguish brand and reinforce consistent experiences
 
 ### Quality Checklist
-- [ ] **Checked Atlaskit documentation** before implementing components
-- [ ] **Verified component availability** in [Atlassian Design System Components](https://atlassian.design/components)
-- [ ] **Used correct Atlaskit imports** and component usage
-- [ ] Follows [Atlassian Design System](https://atlassian.design/) guidelines
-- [ ] Uses Atlaskit components as base (not replaced with HTML)
+- [ ] **Checked MUI documentation** before implementing components
+- [ ] **Verified component availability** in [Material Design Components](https://m3.material.io/components)
+- [ ] **Used correct MUI imports** and component usage
+- [ ] Follows [Material Design](https://m3.material.io/) guidelines
+- [ ] Uses MUI components as base (not replaced with HTML)
 - [ ] Applies design tokens consistently
 - [ ] Supports light and dark themes
 - [ ] Includes proper TypeScript types
@@ -213,43 +217,43 @@ Follow [Atlassian's component guidelines](https://atlassian.design/components) w
 - Verify design token usage
 - Test responsive behavior
 
-## Atlassian Design System Resources
+## Material Design Resources
 
 ### Primary Documentation Sources
-- [Atlassian Design System](https://atlassian.design/) - Main design system documentation
-- [Atlaskit Components](https://atlaskit.atlassian.com/) - React component library documentation
-- [Design Foundations](https://atlassian.design/foundations) - Tokens, accessibility, content, spacing, color, typography
-- [Components](https://atlassian.design/components) - Flexible components and primitives
-- [Tools](https://atlassian.design/tools) - Figma libraries, ESLint plugin, styling standards
+- [Material Design](https://m3.material.io/) - Main design system documentation
+- [Material UI Components](https://mui.com/) - React component library documentation
+- [Design Foundations](https://m3.material.io/foundations) - Tokens, accessibility, content, spacing, color, typography
+- [Components](https://m3.material.io/components) - Flexible components and primitives
+- [Tools](https://m3.material.io/tools) - Figma libraries, design tools
 
 ### Documentation Checking Requirements
 **BEFORE implementing any UI component:**
-1. **Check [Atlaskit documentation](https://atlaskit.atlassian.com/)** for available components
+1. **Check [MUI documentation](https://mui.com/)** for available components
 2. **Verify component imports** and usage patterns
-3. **Check [Atlassian Design System Components](https://atlassian.design/components)** for design guidelines
+3. **Check [Material Design Components](https://m3.material.io/components)** for design guidelines
 4. **Review component props and API** in the documentation
-5. **Only use HTML elements** if Atlaskit doesn't provide the needed component or primitive
+5. **Only use HTML elements** if MUI doesn't provide the needed component or primitive
 
-## Troubleshooting Atlaskit Components
+## Troubleshooting MUI Components
 
-### When Atlaskit Components Don't Work
-If you encounter issues with Atlaskit components:
+### When MUI Components Don't Work
+If you encounter issues with MUI components:
 
-1. **Check Documentation First**: Always consult [Atlaskit documentation](https://atlaskit.atlassian.com/) for the specific component
+1. **Check Documentation First**: Always consult [MUI documentation](https://mui.com/) for the specific component
 2. **Verify Installation**: Ensure the component package is installed via npm
 3. **Check Import Syntax**: Verify correct import statements (default vs named imports)
 4. **Review Component API**: Check available props and usage examples
 5. **Check Version Compatibility**: Ensure component versions are compatible with your React version
 
-### When to Use HTML Instead of Atlaskit
+### When to Use HTML Instead of MUI
 **ONLY use HTML elements when:**
-- Atlaskit doesn't provide the specific component you need
+- MUI doesn't provide the specific component you need
 - You've verified the component doesn't exist in the documentation
 - You've confirmed the component is deprecated or unavailable
-- You need custom functionality that Atlaskit doesn't support
+- You need custom functionality that MUI doesn't support
 
 **NEVER use HTML when:**
-- Atlaskit provides an equivalent component
+- MUI provides an equivalent component
 - You haven't checked the documentation thoroughly
-- You're trying to avoid learning the proper Atlaskit API
+- You're trying to avoid learning the proper MUI API
 - You want to "simplify" without understanding the component

@@ -1,10 +1,10 @@
 # Navigation Setup
 
-This document describes the Atlassian Design System navigation implementation for the Online Tools Collection.
+This document describes the Material Design navigation implementation for the Online Tools Collection.
 
 ## Overview
 
-The application now uses Atlassian's Navigation System with:
+The application now uses Material Design navigation with:
 - **Top Navigation**: Contains the logo, app title, theme toggle, and user avatar
 - **Side Navigation**: Lists all available tools with descriptions
 - **Content Area**: Displays the main content for each tool
@@ -13,12 +13,12 @@ The application now uses Atlassian's Navigation System with:
 
 ### ThemeProvider (`src/components/ThemeProvider.tsx`)
 - Manages light/dark/auto theme switching
-- Uses Atlaskit's `setGlobalTheme` API
+- Uses Material UI's theme system
 - Persists theme preference in localStorage
 - Provides theme context to all components
 
 ### NavigationLayout (`src/components/NavigationLayout.tsx`)
-- Main navigation wrapper using Atlaskit's Navigation System
+- Main navigation wrapper using Material UI components
 - Implements top navigation with logo and theme toggle
 - Side navigation with tool listings
 - Responsive design that works on all screen sizes
@@ -35,11 +35,11 @@ The application now uses Atlassian's Navigation System with:
 - **Tool Discovery**: Side navigation shows all available tools
 - **Quick Access**: Direct links to each tool
 - **Responsive Design**: Works on desktop, tablet, and mobile
-- **Accessibility**: Built-in ARIA support from Atlaskit
+- **Accessibility**: Built-in ARIA support from Material UI
 
 ### Tool Integration
 - Each tool page automatically inherits the navigation layout
-- Consistent styling using Atlassian design tokens
+- Consistent styling using Material Design tokens
 - Proper content area with appropriate spacing
 
 ## Available Tools
@@ -81,14 +81,12 @@ To run the application with the new navigation:
 npm run dev
 ```
 
-The application will be available at `http://localhost:3000` with the full Atlassian navigation system.
+The application will be available at `http://localhost:3000` with the full Material Design navigation system.
 
 ## Dependencies
 
-Key Atlaskit packages used:
-- `@atlaskit/navigation-system` - Main navigation components
-- `@atlaskit/tokens` - Theme and design tokens
-- `@atlaskit/button` - Button components
-- `@atlaskit/logo` - Atlassian logo
-- `@atlaskit/avatar` - User avatar
-- `@atlaskit/flag` - Notifications and alerts
+Key Material UI packages used:
+- `@mui/material` - Main Material UI components
+- `@mui/icons-material` - Material Design icons
+- `@emotion/react` - CSS-in-JS styling
+- `@emotion/styled` - Styled components
