@@ -57,9 +57,8 @@ export function JsonBeautifierTool(): JSX.Element {
   // Get all available presets (excluding uglify for beautifier)
   const presets = useMemo(() => {
     const allPresets = JsonFormatter.getAllPresets();
-    // biome-ignore lint/correctness/noUnusedVariables: uglify is intentionally destructured out
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { uglify, ...beautifierPresets } = allPresets;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/naming-convention
+    const { uglify: _uglify, ...beautifierPresets } = allPresets;
     return beautifierPresets;
   }, []);
 

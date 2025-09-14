@@ -1,6 +1,10 @@
 'use client';
 
-import { DataObject as JsonIcon, Menu as MenuIcon } from '@mui/icons-material';
+import {
+  Image as ImageIcon,
+  DataObject as JsonIcon,
+  Menu as MenuIcon,
+} from '@mui/icons-material';
 import {
   AppBar,
   Box,
@@ -28,6 +32,12 @@ const tools: Tool[] = [
     description: 'Minimize JSON by removing all unnecessary whitespace',
     icon: <JsonIcon />,
     href: '/json-uglifier',
+  },
+  {
+    name: 'Image Converter',
+    description: 'Convert images between formats with bulk processing support',
+    icon: <ImageIcon />,
+    href: '/image-converter',
   },
 ];
 
