@@ -79,6 +79,49 @@ src/
     └── [tool-name].ts          # Tool-specific types
 ```
 
+## UI Space Optimization Guidelines
+
+### Layout Principles
+- **Maximize viewport utilization**: Use `width: '100%'` with responsive padding instead of fixed max-widths
+- **Column-based settings**: Organize controls in `xs={12} sm={6} lg={3/4}` grid patterns to reduce vertical scrolling
+- **Integrated actions**: Place primary buttons within settings panels rather than separate sections
+- **Increased content areas**: Use 600px+ height for input/output text areas for better content visibility
+- **Proper scrolling**: Always enable `overflow: 'auto'` for text content to handle long inputs
+
+### Responsive Breakpoints Strategy
+- **Mobile (xs)**: Single column layout for all settings
+- **Tablet (sm)**: Two column layout for settings groups
+- **Desktop (lg+)**: Three to four column layout for maximum space efficiency
+
+### Example Space-Optimized Layout
+```tsx
+<Box sx={{ width: '100%', px: { xs: 1, sm: 2, md: 3 } }}>
+  <Grid container spacing={3}>
+    <Grid item xs={12}>
+      <Card>
+        <CardContent>
+          <Grid container spacing={2}>
+            {/* Settings in columns */}
+            <Grid item xs={12} sm={6} lg={3}>Settings 1</Grid>
+            <Grid item xs={12} sm={6} lg={3}>Settings 2</Grid>
+            <Grid item xs={12} sm={6} lg={3}>Settings 3</Grid>
+            <Grid item xs={12} sm={6} lg={3}>Action Buttons</Grid>
+          </Grid>
+        </CardContent>
+      </Card>
+    </Grid>
+    
+    {/* Full-width input/output */}
+    <Grid item xs={12} lg={6}>
+      <Paper sx={{ height: '600px' }}>Input Area</Paper>
+    </Grid>
+    <Grid item xs={12} lg={6}>
+      <Paper sx={{ height: '600px' }}>Output Area</Paper>
+    </Grid>
+  </Grid>
+</Box>
+```
+
 ## Tool Development Pattern
 
 ### 1. Tool Logic (`src/lib/[tool-name].ts`)

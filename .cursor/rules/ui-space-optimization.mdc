@@ -1,0 +1,235 @@
+---
+description: UI space optimization guidelines for tool development
+globs: ["src/components/tools/**/*", "src/app/*/page.tsx"]
+alwaysApply: true
+---
+
+# UI Space Optimization Guidelines
+
+## Core Principles
+
+### 1. Maximize Viewport Utilization
+- **Remove excessive margins**: Use `width: '100%'` instead of `maxWidth` constraints
+- **Responsive padding**: Use `px: { xs: 1, sm: 2, md: 3 }` for adaptive spacing
+- **Full-width containers**: Avoid fixed max-widths that create empty space on larger screens
+
+### 2. Efficient Settings Layout
+- **Column-based organization**: Group related settings in columns rather than stacking vertically
+- **Responsive grid breakpoints**: Use `xs={12} sm={6} lg={3/4}` patterns for optimal space usage
+- **Integrated action buttons**: Place primary actions within settings panels to reduce UI clutter
+
+### 3. Content Area Optimization
+- **Increased text area heights**: Use 600px+ for input/output areas instead of 500px
+- **Side-by-side layouts**: Utilize lg={6} for input/output on larger screens
+- **Proper scrolling**: Ensure text areas are scrollable with `overflow: 'auto'`
+
+## Layout Patterns
+
+### ✅ Recommended Layout Structure
+```tsx
+<Box sx={{ width: '100%', px: { xs: 1, sm: 2, md: 3 } }}>
+  {/* Tool Header */}
+  <Box sx={{ mb: 3 }}>
+    <Typography variant="h4" component="h1" gutterBottom>
+      Tool Name
+    </Typography>
+    <Typography variant="body1" color="text.secondary" paragraph>
+      Tool description
+    </Typography>
+  </Box>
+
+  <Grid container spacing={3}>
+    {/* Settings Panel - Organized in columns */}
+    <Grid item xs={12}>
+      <Card sx={{ mb: 3 }}>
+        <CardContent>
+          <Typography variant="h6" gutterBottom>
+            Settings
+          </Typography>
+          
+          <Grid container spacing={2}>
+            {/* Main settings in columns */}
+            <Grid item xs={12} sm={6} lg={3}>
+              <FormControl fullWidth>
+                {/* Preset/Mode selection */}
+              </FormControl>
+            </Grid>
+            
+            <Grid item xs={12} sm={6} lg={3}>
+              {/* Configuration options */}
+            </Grid>
+            
+            <Grid item xs={12} sm={6} lg={3}>
+              {/* Additional settings */}
+            </Grid>
+            
+            <Grid item xs={12} sm={6} lg={3}>
+              {/* Action buttons integrated in settings */}
+              <Box sx={{ display: 'flex', gap: 1, flexDirection: 'column' }}>
+                <Button variant="contained" fullWidth size="large">
+                  Primary Action
+                </Button>
+                <Button variant="outlined" fullWidth>
+                  Secondary Action
+                </Button>
+              </Box>
+            </Grid>
+
+            {/* Secondary settings in grouped columns */}
+            <Grid item xs={12} sm={6} lg={4}>
+              <Typography variant="subtitle2" gutterBottom>
+                Category 1 Options
+              </Typography>
+              <FormGroup>
+                {/* Related switches/options */}
+              </FormGroup>
+            </Grid>
+            
+            <Grid item xs={12} sm={6} lg={4}>
+              <Typography variant="subtitle2" gutterBottom>
+                Category 2 Options
+              </Typography>
+              <FormGroup>
+                {/* Related switches/options */}
+              </FormGroup>
+            </Grid>
+            
+            <Grid item xs={12} sm={6} lg={4}>
+              <Typography variant="subtitle2" gutterBottom>
+                Category 3 Options
+              </Typography>
+              <FormGroup>
+                {/* Related switches/options */}
+              </FormGroup>
+            </Grid>
+          </Grid>
+        </CardContent>
+      </Card>
+    </Grid>
+
+    {/* Input/Output Areas - Full width utilization */}
+    <Grid item xs={12} lg={6}>
+      <Paper sx={{ p: 2, height: '600px', display: 'flex', flexDirection: 'column' }}>
+        <Typography variant="h6" gutterBottom>Input</Typography>
+        <TextField
+          multiline
+          fullWidth
+          sx={{
+            flexGrow: 1,
+            '& .MuiInputBase-input': {
+              height: '100% !important',
+              overflow: 'auto !important',
+            },
+          }}
+        />
+      </Paper>
+    </Grid>
+    
+    <Grid item xs={12} lg={6}>
+      <Paper sx={{ p: 2, height: '600px', display: 'flex', flexDirection: 'column' }}>
+        <Typography variant="h6" gutterBottom>Output</Typography>
+        <TextField
+          multiline
+          fullWidth
+          InputProps={{ readOnly: true }}
+          sx={{
+            flexGrow: 1,
+            '& .MuiInputBase-input': {
+              height: '100% !important',
+              overflow: 'auto !important',
+            },
+          }}
+        />
+      </Paper>
+    </Grid>
+
+    {/* Results/Metadata - Full width */}
+    <Grid item xs={12}>
+      <Card>
+        <CardContent>
+          <Typography variant="h6" gutterBottom>Results</Typography>
+          <Grid container spacing={2}>
+            <Grid item xs={6} sm={4} lg={2}>
+              {/* Metric 1 */}
+            </Grid>
+            <Grid item xs={6} sm={4} lg={2}>
+              {/* Metric 2 */}
+            </Grid>
+            {/* Continue pattern for 6 metrics on large screens */}
+          </Grid>
+        </CardContent>
+      </Card>
+    </Grid>
+  </Grid>
+</Box>
+```
+
+### ❌ Avoid These Patterns
+```tsx
+// DON'T: Excessive containers and max-widths
+<Box sx={{ maxWidth: '1200px', mx: 'auto', p: 4 }}>
+  <Container maxWidth="lg">
+    {/* Creates unnecessary empty space */}
+  </Container>
+</Box>
+
+// DON'T: Vertical stacking of all settings
+<Grid container spacing={3}>
+  <Grid item xs={12}>
+    <FormControl fullWidth>
+      {/* Setting 1 */}
+    </FormControl>
+  </Grid>
+  <Grid item xs={12}>
+    <FormControl fullWidth>
+      {/* Setting 2 */}
+    </FormControl>
+  </Grid>
+  {/* Results in excessive vertical scrolling */}
+</Grid>
+
+// DON'T: Separate action button section
+<Grid item xs={12}>
+  <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
+    <Button>Action 1</Button>
+    <Button>Action 2</Button>
+  </Box>
+</Grid>
+```
+
+## Responsive Breakpoints
+
+### Grid Sizing Strategy
+- **xs={12}**: All items full width on mobile
+- **sm={6}**: Two columns on tablets
+- **lg={3}**: Four columns for main settings on desktop
+- **lg={4}**: Three columns for secondary settings groups
+- **lg={2}**: Six columns for metrics/results
+
+### Text Area Dimensions
+- **Height**: Minimum 600px for input/output areas
+- **Width**: Full width with proper responsive padding
+- **Scrolling**: Always enable with `overflow: 'auto !important'`
+
+## Common Space Wasters to Avoid
+
+1. **Excessive margins and padding**: Use responsive spacing
+2. **Fixed max-widths**: Let content use available space
+3. **Vertical setting stacks**: Organize in columns
+4. **Separate action sections**: Integrate with settings
+5. **Small text areas**: Increase to 600px+ height
+6. **Unnecessary containers**: Reduce nesting
+
+## Testing Checklist
+
+- [ ] No horizontal empty space on 1920px+ screens
+- [ ] Settings organized efficiently in columns
+- [ ] Text areas are properly scrollable
+- [ ] All interactive elements are easily accessible
+- [ ] Layout adapts well to mobile (xs), tablet (sm), and desktop (lg+)
+- [ ] Action buttons are prominently placed and easily accessible
+- [ ] Content flows naturally without excessive scrolling
+
+## Implementation Example
+
+See `src/components/tools/JsonBeautifierTool.tsx` for a complete implementation following these guidelines.

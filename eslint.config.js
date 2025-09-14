@@ -90,9 +90,10 @@ export default [
     },
   },
 
-  // TypeScript and React files
+  // TypeScript and React files (excluding test files)
   {
     files: ['**/*.{ts,tsx}'],
+    ignores: ['**/__tests__/**/*', '**/*.test.*', '**/*.spec.*'],
     languageOptions: {
       parser: typescriptParser,
       parserOptions: {
@@ -338,8 +339,33 @@ export default [
   {
     files: ['**/__tests__/**/*', '**/*.test.*', '**/*.spec.*'],
     languageOptions: {
+      parser: typescriptParser,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+        ecmaVersion: 2021,
+        sourceType: 'module',
+        // Don't use project for test files since they're excluded from tsconfig.json
+      },
       globals: {
+        ...globals.browser,
+        ...globals.node,
         ...globals.jest,
+        React: 'readonly',
+        JSX: 'readonly',
+      },
+    },
+    plugins: {
+      '@typescript-eslint': typescript,
+      react,
+      'react-hooks': reactHooks,
+      'jsx-a11y': jsxA11y,
+      'no-only-tests': noOnlyTests,
+    },
+    settings: {
+      react: {
+        version: 'detect',
       },
     },
     rules: {
@@ -347,6 +373,24 @@ export default [
       '@typescript-eslint/no-explicit-any': 'off',
       // Allow more flexible typing in tests
       '@typescript-eslint/explicit-function-return-type': 'off',
+      // Disable rules that require project configuration
+      '@typescript-eslint/prefer-nullish-coalescing': 'off',
+      '@typescript-eslint/prefer-optional-chain': 'off',
+      '@typescript-eslint/no-unnecessary-condition': 'off',
+      '@typescript-eslint/no-unnecessary-type-assertion': 'off',
+      '@typescript-eslint/explicit-module-boundary-types': 'off',
+
+      // Basic React rules for test files
+      'react/prop-types': 'off',
+      'react/react-in-jsx-scope': 'off',
+      'react/display-name': 'off', // Test components don't need display names
+      'react/jsx-key': 'error',
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'off', // More flexible in tests
+
+      // Test-specific rules
+      'no-only-tests/no-only-tests': 'error',
+      'no-console': 'off', // Allow console in tests
     },
   },
 

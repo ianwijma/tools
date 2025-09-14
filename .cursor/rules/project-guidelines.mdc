@@ -124,6 +124,10 @@ static process(input: ToolInput): ToolOutput | ToolError
 - **Maintain visual hierarchy** with consistent typography and spacing
 - **Follow responsive design** principles for all screen sizes
 - **Provide clear feedback** with proper loading states and error messages
+- **Maximize space utilization** - Remove unnecessary margins and padding, use full viewport width
+- **Efficient layout design** - Organize settings in columns/rows to minimize vertical scrolling
+- **Responsive grid systems** - Use xs={12} sm={6} lg={3/4} patterns for optimal space usage
+- **Integrated action buttons** - Place primary actions within settings panels to reduce UI clutter
 
 ### Testing Rules
 - **Write comprehensive tests** for all components and functionality

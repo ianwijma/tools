@@ -1,10 +1,9 @@
 'use client';
 
-import { Menu as MenuIcon } from '@mui/icons-material';
+import { DataObject as JsonIcon, Menu as MenuIcon } from '@mui/icons-material';
 import {
   AppBar,
   Box,
-  Container,
   Drawer,
   IconButton,
   Toolbar,
@@ -17,7 +16,14 @@ import DrawerContent from './DrawerContent';
 const drawerWidth: number = 280;
 
 // Tools will be added here as they are implemented
-const tools: Tool[] = [];
+const tools: Tool[] = [
+  {
+    name: 'JSON Beautifier',
+    description: 'Transform minified JSON into clean, readable format',
+    icon: <JsonIcon />,
+    href: '/json-beautifier',
+  },
+];
 
 export default function NavigationLayout({
   children,
@@ -98,7 +104,9 @@ export default function NavigationLayout({
         }}
       >
         <Toolbar />
-        <Container maxWidth="lg">{children}</Container>
+        <Box sx={{ width: '100%', px: { xs: 1, sm: 2, md: 3 } }}>
+          {children}
+        </Box>
       </Box>
     </Box>
   );
