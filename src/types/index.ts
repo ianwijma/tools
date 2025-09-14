@@ -1,18 +1,5 @@
 // Core project types
 
-export type Theme = 'light' | 'dark' | 'auto';
-
-export interface ThemeProviderState {
-  theme: Theme;
-  setTheme: (theme: Theme) => void;
-}
-
-export interface ThemeProviderProps {
-  children: React.ReactNode;
-  defaultTheme?: Theme;
-  storageKey?: string;
-}
-
 // Tool-related types
 export interface Tool {
   name: string;
@@ -88,10 +75,3 @@ export type Status = 'idle' | 'loading' | 'success' | 'error';
 export type Size = 'small' | 'medium' | 'large';
 export type Variant = 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info';
 export type Direction = 'up' | 'down' | 'left' | 'right';
-
-// Window object extensions
-declare global {
-  interface Window {
-    __INITIAL_THEME__?: string;
-  }
-}

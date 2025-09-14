@@ -20,7 +20,7 @@ jest.mock('next/navigation', () => ({
   },
 }))
 
-// Mock window.matchMedia for theme detection
+// Mock window.matchMedia for responsive design
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
   value: jest.fn().mockImplementation(query => ({
@@ -43,23 +43,3 @@ const localStorageMock = {
   clear: jest.fn(),
 }
 global.localStorage = localStorageMock
-
-// Mock document.documentElement for theme classes
-Object.defineProperty(document, 'documentElement', {
-  value: {
-    classList: {
-      add: jest.fn(),
-      remove: jest.fn(),
-      contains: jest.fn(),
-    },
-    setAttribute: jest.fn(),
-    getAttribute: jest.fn(),
-  },
-  writable: true,
-})
-
-// Mock MUI theme
-jest.mock('@mui/material/styles', () => ({
-  createTheme: jest.fn((): Record<string, unknown> => ({})),
-  ThemeProvider: ({ children }: { children: React.ReactNode }): React.ReactNode => children,
-}))

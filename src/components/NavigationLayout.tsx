@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import {
   AppBar,
   Box,
-  Button,
   Container,
   Drawer,
   IconButton,
@@ -16,18 +15,11 @@ import {
   Toolbar,
   Typography,
   useTheme,
-  useMediaQuery,
-  Switch,
-  FormControlLabel,
 } from '@mui/material';
 import {
   Menu as MenuIcon,
-  LightMode as LightModeIcon,
-  DarkMode as DarkModeIcon,
-  SettingsBrightness as AutoModeIcon,
 } from '@mui/icons-material';
-import { useTheme as useCustomTheme } from './ThemeProvider';
-import type { Tool, NavigationLayoutProps, Theme } from '@/types';
+import type { Tool, NavigationLayoutProps } from '@/types';
 
 const drawerWidth: number = 280;
 
@@ -36,32 +28,10 @@ const tools: Tool[] = [];
 
 export default function NavigationLayout({ children }: NavigationLayoutProps): JSX.Element {
   const [mobileOpen, setMobileOpen] = useState<boolean>(false);
-  const { theme, setTheme } = useCustomTheme();
   const muiTheme = useTheme();
-  const isMobile: boolean = useMediaQuery(muiTheme.breakpoints.down('md'));
 
   const handleDrawerToggle = (): void => {
     setMobileOpen(!mobileOpen);
-  };
-
-  const handleThemeChange = (): void => {
-    const themes: Theme[] = ['light', 'dark', 'auto'];
-    const currentIndex: number = themes.indexOf(theme);
-    const nextIndex: number = (currentIndex + 1) % themes.length;
-    setTheme(themes[nextIndex]);
-  };
-
-  const getThemeIcon = (): JSX.Element => {
-    switch (theme) {
-      case 'light':
-        return <LightModeIcon />;
-      case 'dark':
-        return <DarkModeIcon />;
-      case 'auto':
-        return <AutoModeIcon />;
-      default:
-        return <AutoModeIcon />;
-    }
   };
 
   const drawer: JSX.Element = (
@@ -141,13 +111,6 @@ export default function NavigationLayout({ children }: NavigationLayoutProps): J
           <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
             Online Tools Collection
           </Typography>
-          <IconButton
-            color="inherit"
-            onClick={handleThemeChange}
-            aria-label="toggle theme"
-          >
-            {getThemeIcon()}
-          </IconButton>
         </Toolbar>
       </AppBar>
 
