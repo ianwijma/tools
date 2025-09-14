@@ -30,13 +30,13 @@ import {
   Typography,
 } from '@mui/material';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { JsonBeautifier } from '@/lib/json-beautifier';
+import { JsonFormatter } from '@/lib/json-formatter';
 import type {
-  JsonBeautifierInput,
-  JsonBeautifierOptions,
-  JsonBeautifierOutput,
-  JsonBeautifierPreset,
-} from '@/types/json-beautifier';
+  JsonFormatterInput,
+  JsonFormatterOptions,
+  JsonFormatterOutput,
+  JsonFormatterPreset,
+} from '@/types/json-formatter';
 
 export function JsonBeautifierTool(): JSX.Element {
   // State management
@@ -45,22 +45,28 @@ export function JsonBeautifierTool(): JSX.Element {
   const [error, setError] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [selectedPreset, setSelectedPreset] =
-    useState<JsonBeautifierPreset>('standard');
-  const [options, setOptions] = useState<JsonBeautifierOptions>(
-    JsonBeautifier.getPreset('standard'),
+    useState<JsonFormatterPreset>('standard');
+  const [options, setOptions] = useState<JsonFormatterOptions>(
+    JsonFormatter.getPreset('standard'),
   );
   const [metadata, setMetadata] = useState<
-    JsonBeautifierOutput['metadata'] | null
+    JsonFormatterOutput['metadata'] | null
   >(null);
   const [advancedExpanded, setAdvancedExpanded] = useState<boolean>(false);
 
-  // Get all available presets
-  const presets = useMemo(() => JsonBeautifier.getAllPresets(), []);
+  // Get all available presets (excluding uglify for beautifier)
+  const presets = useMemo(() => {
+    const allPresets = JsonFormatter.getAllPresets();
+    // biome-ignore lint/correctness/noUnusedVariables: uglify is intentionally destructured out
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { uglify, ...beautifierPresets } = allPresets;
+    return beautifierPresets;
+  }, []);
 
   // Update options when preset changes
   useEffect(() => {
     if (selectedPreset !== 'custom') {
-      setOptions(JsonBeautifier.getPreset(selectedPreset));
+      setOptions(JsonFormatter.getPreset(selectedPreset));
     }
   }, [selectedPreset]);
 
@@ -77,12 +83,13 @@ export function JsonBeautifierTool(): JSX.Element {
     setMetadata(null);
 
     try {
-      const input: JsonBeautifierInput = {
+      const input: JsonFormatterInput = {
         jsonString: inputJson,
+        mode: 'beautify',
         options,
       };
 
-      const result = JsonBeautifier.process(input);
+      const result = JsonFormatter.process(input);
 
       if ('message' in result) {
         const errorResult = result;
@@ -141,8 +148,8 @@ export function JsonBeautifierTool(): JSX.Element {
 
   // Handle preset change
   const handlePresetChange = useCallback(
-    (event: SelectChangeEvent<JsonBeautifierPreset>): void => {
-      const preset = event.target.value as JsonBeautifierPreset;
+    (event: SelectChangeEvent<JsonFormatterPreset>): void => {
+      const preset = event.target.value as JsonFormatterPreset;
       setSelectedPreset(preset);
 
       // Automatically expand advanced settings when custom preset is selected
@@ -155,9 +162,9 @@ export function JsonBeautifierTool(): JSX.Element {
 
   // Handle individual option changes
   const handleOptionChange = useCallback(
-    <T extends keyof JsonBeautifierOptions>(
+    <T extends keyof JsonFormatterOptions>(
       key: T,
-      value: JsonBeautifierOptions[T],
+      value: JsonFormatterOptions[T],
     ): void => {
       setOptions((prev) => ({ ...prev, [key]: value }));
       setSelectedPreset('custom');
@@ -245,7 +252,10 @@ export function JsonBeautifierTool(): JSX.Element {
                     color="text.secondary"
                     sx={{ mt: 1, display: 'block' }}
                   >
-                    {presets[selectedPreset].description}
+                    {selectedPreset in presets
+                      ? presets[selectedPreset as keyof typeof presets]
+                          .description
+                      : ''}
                   </Typography>
                 </Grid>
 
@@ -662,7 +672,7 @@ export function JsonBeautifierTool(): JSX.Element {
                       Beautified Size
                     </Typography>
                     <Typography variant="h6">
-                      {metadata.beautifiedSize.toLocaleString()} chars
+                      {metadata.formattedSize.toLocaleString()} chars
                     </Typography>
                   </Grid>
 

@@ -23,6 +23,12 @@ const tools: Tool[] = [
     icon: <JsonIcon />,
     href: '/json-beautifier',
   },
+  {
+    name: 'JSON Uglifier',
+    description: 'Minimize JSON by removing all unnecessary whitespace',
+    icon: <JsonIcon />,
+    href: '/json-uglifier',
+  },
 ];
 
 export default function NavigationLayout({

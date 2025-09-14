@@ -1,12 +1,13 @@
-// JSON Beautifier tool types
+// JSON Formatter tool types - Unified library for beautifying and uglifying JSON
 import type { ToolError, ToolOutput } from './index';
 
-export interface JsonBeautifierInput {
+export interface JsonFormatterInput {
   jsonString: string;
-  options?: JsonBeautifierOptions;
+  mode: 'beautify' | 'uglify';
+  options?: JsonFormatterOptions;
 }
 
-export interface JsonBeautifierOptions {
+export interface JsonFormatterOptions {
   indentType: 'spaces' | 'tabs';
   indentSize: number;
   sortKeys: boolean;
@@ -21,11 +22,12 @@ export interface JsonBeautifierOptions {
   alignColons: boolean;
 }
 
-export interface JsonBeautifierOutput extends ToolOutput {
+export interface JsonFormatterOutput extends ToolOutput {
   result: string;
   metadata: {
     originalSize: number;
-    beautifiedSize: number;
+    formattedSize: number;
+    compressionRatio?: number; // Only for uglify mode
     keyCount: number;
     depth: number;
     arrayCount: number;
@@ -34,12 +36,12 @@ export interface JsonBeautifierOutput extends ToolOutput {
   };
 }
 
-export interface JsonBeautifierError extends ToolError {
+export interface JsonFormatterError extends ToolError {
   code:
     | 'INVALID_JSON'
     | 'EMPTY_INPUT'
     | 'PARSING_ERROR'
-    | 'BEAUTIFYING_ERROR'
+    | 'FORMATTING_ERROR'
     | 'VALIDATION_ERROR';
   line?: number;
   column?: number;
@@ -52,8 +54,8 @@ export interface JsonValidationResult {
   warnings: string[];
 }
 
-// Configuration presets for common beautification scenarios
-export type JsonBeautifierPreset =
+// Configuration presets for common formatting scenarios
+export type JsonFormatterPreset =
   | 'minimal' // Minimal beautification
   | 'standard' // Standard 2-space indentation
   | 'readable' // Extra readable with generous spacing
@@ -62,8 +64,8 @@ export type JsonBeautifierPreset =
   | 'uglify' // Minimize JSON by removing all unnecessary whitespace
   | 'custom'; // User-defined settings
 
-export interface JsonBeautifierPresetConfig {
+export interface JsonFormatterPresetConfig {
   name: string;
   description: string;
-  options: JsonBeautifierOptions;
+  options: JsonFormatterOptions;
 }
