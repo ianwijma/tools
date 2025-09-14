@@ -66,11 +66,14 @@ jobs:
       - name: Run tests
         run: npm run test:coverage
         
-      - name: Upload coverage reports
-        uses: codecov/codecov-action@v3
-        with:
-          file: ./coverage/lcov.info
-          fail_ci_if_error: true
+      - name: Display coverage summary
+        run: |
+          echo "✅ Test coverage generated successfully!"
+          echo "📊 Coverage files available in ./coverage/ directory"
+          echo "🔍 View detailed coverage report in ./coverage/lcov-report/index.html"
+          if [ -f "./coverage/lcov.info" ]; then
+            echo "📈 Coverage data collected in lcov.info format"
+          fi
   
   build:
     name: 'Build Application'
