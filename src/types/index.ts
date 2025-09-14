@@ -1,4 +1,5 @@
 // Core project types
+import type React from "react";
 
 // Tool-related types
 export interface Tool {
@@ -41,7 +42,15 @@ export interface ApiResponse<T = unknown> {
 export interface FormField {
   name: string;
   label: string;
-  type: 'text' | 'email' | 'password' | 'number' | 'textarea' | 'select' | 'checkbox' | 'radio';
+  type:
+    | "text"
+    | "email"
+    | "password"
+    | "number"
+    | "textarea"
+    | "select"
+    | "checkbox"
+    | "radio";
   required?: boolean;
   placeholder?: string;
   options?: Array<{ value: string; label: string }>;
@@ -66,12 +75,24 @@ export type DeepPartial<T> = {
 
 // Event handler types
 export type EventHandler<T = Event> = (event: T) => void;
-export type ChangeEventHandler<T = HTMLInputElement> = (event: React.ChangeEvent<T>) => void;
-export type ClickEventHandler<T = HTMLButtonElement> = (event: React.MouseEvent<T>) => void;
-export type SubmitEventHandler<T = HTMLFormElement> = (event: React.FormEvent<T>) => void;
+export type ChangeEventHandler<T = HTMLInputElement> = (
+  event: React.ChangeEvent<T>,
+) => void;
+export type ClickEventHandler<T = HTMLButtonElement> = (
+  event: React.MouseEvent<T>,
+) => void;
+export type SubmitEventHandler<T = HTMLFormElement> = (
+  event: React.FormEvent<T>,
+) => void;
 
 // Common utility types
-export type Status = 'idle' | 'loading' | 'success' | 'error';
-export type Size = 'small' | 'medium' | 'large';
-export type Variant = 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info';
-export type Direction = 'up' | 'down' | 'left' | 'right';
+export type Status = "idle" | "loading" | "success" | "error";
+export type Size = "small" | "medium" | "large";
+export type Variant =
+  | "primary"
+  | "secondary"
+  | "success"
+  | "error"
+  | "warning"
+  | "info";
+export type Direction = "up" | "down" | "left" | "right";

@@ -1,6 +1,5 @@
-'use client';
+"use client";
 
-import React from 'react';
 import {
   Box,
   List,
@@ -10,18 +9,25 @@ import {
   ListItemText,
   Toolbar,
   Typography,
-} from '@mui/material';
-import type { Tool } from '@/types';
+} from "@mui/material";
+import type { Tool } from "@/types";
 
 interface DrawerContentProps {
   tools: Tool[];
 }
 
-export default function DrawerContent({ tools }: DrawerContentProps): JSX.Element {
+export default function DrawerContent({
+  tools,
+}: DrawerContentProps): JSX.Element {
   return (
     <Box>
       <Toolbar>
-        <Typography variant="h6" noWrap component="div" sx={{ fontWeight: 'bold' }}>
+        <Typography
+          variant="h6"
+          noWrap
+          component="div"
+          sx={{ fontWeight: "bold" }}
+        >
           Online Tools
         </Typography>
       </Toolbar>
@@ -32,12 +38,12 @@ export default function DrawerContent({ tools }: DrawerContentProps): JSX.Elemen
               primary="No tools available yet"
               secondary="Tools will appear here as they are implemented"
               primaryTypographyProps={{
-                fontSize: '0.9rem',
+                fontSize: "0.9rem",
                 fontWeight: 500,
-                color: 'text.secondary',
+                color: "text.secondary",
               }}
               secondaryTypographyProps={{
-                fontSize: '0.75rem',
+                fontSize: "0.75rem",
               }}
             />
           </ListItem>
@@ -48,8 +54,8 @@ export default function DrawerContent({ tools }: DrawerContentProps): JSX.Elemen
                 component="a"
                 href={tool.href}
                 sx={{
-                  '&:hover': {
-                    backgroundColor: 'action.hover',
+                  "&:hover": {
+                    backgroundColor: "action.hover",
                   },
                 }}
               >
@@ -58,11 +64,11 @@ export default function DrawerContent({ tools }: DrawerContentProps): JSX.Elemen
                   primary={tool.name}
                   secondary={tool.description}
                   primaryTypographyProps={{
-                    fontSize: '0.9rem',
+                    fontSize: "0.9rem",
                     fontWeight: 500,
                   }}
                   secondaryTypographyProps={{
-                    fontSize: '0.75rem',
+                    fontSize: "0.75rem",
                   }}
                 />
               </ListItemButton>

@@ -14,14 +14,15 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Online Tools Collection",
-  description: "A collection of useful online tools that prioritize frontend execution for performance and privacy",
+  description:
+    "A collection of useful online tools that prioritize frontend execution for performance and privacy",
 };
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>): JSX.Element {
   return (
     <html lang="en">
       <head>

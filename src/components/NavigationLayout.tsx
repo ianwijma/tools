@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
+import { Menu as MenuIcon } from "@mui/icons-material";
 import {
   AppBar,
   Box,
@@ -9,28 +9,27 @@ import {
   IconButton,
   Toolbar,
   Typography,
-} from '@mui/material';
-import {
-  Menu as MenuIcon,
-} from '@mui/icons-material';
-import DrawerContent from './DrawerContent';
-import type { Tool, NavigationLayoutProps } from '@/types';
+} from "@mui/material";
+import { useState } from "react";
+import type { NavigationLayoutProps, Tool } from "@/types";
+import DrawerContent from "./DrawerContent";
 
 const drawerWidth: number = 280;
 
 // Tools will be added here as they are implemented
 const tools: Tool[] = [];
 
-export default function NavigationLayout({ children }: NavigationLayoutProps): JSX.Element {
+export default function NavigationLayout({
+  children,
+}: NavigationLayoutProps): JSX.Element {
   const [mobileOpen, setMobileOpen] = useState<boolean>(false);
 
   const handleDrawerToggle = (): void => {
     setMobileOpen(!mobileOpen);
   };
 
-
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: "flex" }}>
       <AppBar
         position="fixed"
         sx={{
@@ -44,7 +43,7 @@ export default function NavigationLayout({ children }: NavigationLayoutProps): J
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { md: 'none' } }}
+            sx={{ mr: 2, display: { md: "none" } }}
           >
             <MenuIcon />
           </IconButton>
@@ -66,9 +65,9 @@ export default function NavigationLayout({ children }: NavigationLayoutProps): J
             keepMounted: true,
           }}
           sx={{
-            display: { xs: 'block', md: 'none' },
-            '& .MuiDrawer-paper': {
-              boxSizing: 'border-box',
+            display: { xs: "block", md: "none" },
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
               width: drawerWidth,
             },
           }}
@@ -78,9 +77,9 @@ export default function NavigationLayout({ children }: NavigationLayoutProps): J
         <Drawer
           variant="permanent"
           sx={{
-            display: { xs: 'none', md: 'block' },
-            '& .MuiDrawer-paper': {
-              boxSizing: 'border-box',
+            display: { xs: "none", md: "block" },
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
               width: drawerWidth,
             },
           }}
@@ -99,9 +98,7 @@ export default function NavigationLayout({ children }: NavigationLayoutProps): J
         }}
       >
         <Toolbar />
-        <Container maxWidth="lg">
-          {children}
-        </Container>
+        <Container maxWidth="lg">{children}</Container>
       </Box>
     </Box>
   );

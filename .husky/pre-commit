@@ -1,0 +1,21 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🔍 Running pre-commit checks..."
+
+# Run lint-staged for staged files
+npx lint-staged
+
+# Check if there are any linting errors or type errors
+if [ $? -ne 0 ]; then
+  echo "❌ Pre-commit checks failed. Please fix the issues above before committing."
+  echo ""
+  echo "To fix automatically, run:"
+  echo "  npm run lint:fix"
+  echo ""
+  echo "To check types manually, run:"
+  echo "  npm run lint:types"
+  exit 1
+fi
+
+echo "✅ Pre-commit checks passed!"
