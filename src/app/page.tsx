@@ -7,7 +7,7 @@ import {
 } from '@mui/material';
 import NavigationLayout from '@/components/NavigationLayout';
 
-export default function Home() {
+export default function Home(): JSX.Element {
   return (
     <NavigationLayout>
       <Box>

@@ -60,6 +60,6 @@ Object.defineProperty(document, 'documentElement', {
 
 // Mock MUI theme
 jest.mock('@mui/material/styles', () => ({
-  createTheme: jest.fn(() => ({})),
-  ThemeProvider: ({ children }: { children: React.ReactNode }) => children,
+  createTheme: jest.fn((): Record<string, unknown> => ({})),
+  ThemeProvider: ({ children }: { children: React.ReactNode }): React.ReactNode => children,
 }))

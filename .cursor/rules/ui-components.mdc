@@ -200,7 +200,13 @@ Follow [Material Design's component guidelines](https://m3.material.io/component
 - [ ] Uses MUI components as base (not replaced with HTML)
 - [ ] Applies design tokens consistently
 - [ ] Supports light and dark themes
-- [ ] Includes proper TypeScript types
+- [ ] **🚨 ALL variables explicitly typed** - No implicit any types
+- [ ] **ALL function parameters explicitly typed**
+- [ ] **ALL function return types explicitly declared**
+- [ ] **ALL React component props properly typed**
+- [ ] **ALL useState hooks explicitly typed**
+- [ ] **ALL interfaces and types properly defined**
+- [ ] **No `any` types used** - Use proper types or `unknown`
 - [ ] Meets accessibility standards
 - [ ] Works responsively on all devices
 - [ ] Uses clear, conversational language

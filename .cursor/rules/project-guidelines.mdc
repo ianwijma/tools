@@ -69,10 +69,17 @@ Each tool should have **one clear, focused purpose**:
 ## Code Standards
 
 ### TypeScript Rules
-- Use TypeScript for all new code
-- Define clear interfaces for inputs and outputs
-- Use proper error handling with typed errors
-- Export interfaces and types from dedicated files
+- **Use TypeScript for ALL code** - No JavaScript files allowed, convert existing JS to TS
+- **Explicit types required for ALL code** - All variables, function parameters, and return types must be explicitly typed
+- **No `any` types allowed** - Use proper types or `unknown` when type is truly unknown
+- **Define clear interfaces** for all data structures, component props, and API responses
+- **Use proper error handling** with typed errors and error boundaries
+- **Export interfaces and types** from dedicated files for reusability
+- **Use strict TypeScript configuration** - Enable all strict type checking options
+- **Type all React components** - Props, state, and refs must be properly typed
+- **Type all API responses** - Define interfaces for all external data
+- **Use generic types** when appropriate for reusable components and functions
+- **Refactor existing code** - All existing code must be updated to use explicit types
 
 ### React/Next.js Rules
 - Use functional components with hooks
@@ -86,10 +93,20 @@ Each tool should have **one clear, focused purpose**:
 export interface ToolError {
   message: string;
   code: string;
-  details?: any;
+  details?: unknown;
 }
 
-// Always return ToolError | ToolOutput pattern
+export interface ToolInput {
+  data: string;
+  options?: Record<string, unknown>;
+}
+
+export interface ToolOutput {
+  result: string;
+  metadata?: Record<string, unknown>;
+}
+
+// Always return ToolError | ToolOutput pattern with explicit types
 static process(input: ToolInput): ToolOutput | ToolError
 ```
 
@@ -135,6 +152,12 @@ static process(input: ToolInput): ToolOutput | ToolError
 14. **Not testing user interactions** - Verify buttons work, forms submit, and navigation functions
 15. **Ignoring responsive testing** - Test components on different screen sizes
 16. **Not mocking external dependencies** - Isolate components for reliable testing
+17. **🚨 Using `any` types** - NEVER ALLOWED, use proper types or `unknown`
+18. **Missing explicit types** - ALL variables, functions, and components must have explicit types
+19. **Untyped function parameters** - ALL function parameters must be explicitly typed
+20. **Untyped return values** - ALL functions must have explicit return types
+21. **Untyped React components** - ALL component props must be properly typed
+22. **Untyped state variables** - ALL useState hooks must have explicit type annotations
 
 ## Questions to Ask Before Implementing
 
@@ -154,3 +177,10 @@ static process(input: ToolInput): ToolOutput | ToolError
 14. **Do tests verify visibility and user interactions, not just DOM presence?**
 15. **Are all user-facing components tested for accessibility?**
 16. **Is the component tested on different screen sizes?**
+17. **🚨 Are ALL variables explicitly typed?** (No implicit any types)
+18. **Are ALL function parameters explicitly typed?**
+19. **Are ALL function return types explicitly declared?**
+20. **Are ALL React component props properly typed?**
+21. **Are ALL useState hooks explicitly typed?**
+22. **Are ALL interfaces and types properly defined?**
+23. **Is the TypeScript configuration strict?**

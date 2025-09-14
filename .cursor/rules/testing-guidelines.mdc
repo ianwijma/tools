@@ -82,27 +82,32 @@ const customJestConfig = {
 ```
 
 ### Required Mocks
-```javascript
+```typescript
 // jest.setup.js
 // Mock Next.js router
 jest.mock('next/navigation', () => ({
-  useRouter: () => ({ push: jest.fn(), replace: jest.fn() }),
-  useSearchParams: () => new URLSearchParams(),
-  usePathname: () => '/',
+  useRouter: (): { push: jest.Mock; replace: jest.Mock } => ({ 
+    push: jest.fn(), 
+    replace: jest.fn() 
+  }),
+  useSearchParams: (): URLSearchParams => new URLSearchParams(),
+  usePathname: (): string => '/',
 }))
 
 // Mock MUI theme
 jest.mock('@mui/material/styles', () => ({
-  createTheme: jest.fn(() => ({})),
-  ThemeProvider: ({ children }: { children: React.ReactNode }) => children,
+  createTheme: jest.fn((): Record<string, unknown> => ({})),
+  ThemeProvider: ({ children }: { children: React.ReactNode }): React.ReactNode => children,
 }))
 
 // Mock localStorage
-const localStorageMock = {
+const localStorageMock: Storage = {
   getItem: jest.fn(),
   setItem: jest.fn(),
   removeItem: jest.fn(),
   clear: jest.fn(),
+  length: 0,
+  key: jest.fn(),
 }
 global.localStorage = localStorageMock
 ```
@@ -130,24 +135,29 @@ src/
 
 ### Example Test Structure
 ```typescript
-describe('ComponentName', () => {
-  beforeEach(() => {
+interface TestProps {
+  title: string;
+  isVisible: boolean;
+}
+
+describe('ComponentName', (): void => {
+  beforeEach((): void => {
     // Setup for each test
   })
 
-  it('should render the component', () => {
+  it('should render the component', (): void => {
     // Test basic rendering
   })
 
-  it('should make all elements visible', () => {
+  it('should make all elements visible', (): void => {
     // Test visibility
   })
 
-  it('should handle user interactions', () => {
+  it('should handle user interactions', (): void => {
     // Test user interactions
   })
 
-  it('should be accessible', () => {
+  it('should be accessible', (): void => {
     // Test accessibility
   })
 })
@@ -175,7 +185,11 @@ screen.getByRole('button', { name: 'Submit' })
 
 ### 3. Test Error States
 ```typescript
-it('should handle errors gracefully', () => {
+interface ErrorComponentProps {
+  error: boolean;
+}
+
+it('should handle errors gracefully', (): void => {
   // Mock error condition
   render(<Component error={true} />)
   
@@ -186,7 +200,7 @@ it('should handle errors gracefully', () => {
 
 ### 4. Test Responsive Behavior
 ```typescript
-it('should work on mobile screens', () => {
+it('should work on mobile screens', (): void => {
   // Mock mobile viewport
   Object.defineProperty(window, 'innerWidth', { value: 375 })
   

@@ -27,34 +27,31 @@ import {
   SettingsBrightness as AutoModeIcon,
 } from '@mui/icons-material';
 import { useTheme as useCustomTheme } from './ThemeProvider';
+import type { Tool, NavigationLayoutProps, Theme } from '@/types';
 
-const drawerWidth = 280;
+const drawerWidth: number = 280;
 
 // Tools will be added here as they are implemented
-const tools: any[] = [];
+const tools: Tool[] = [];
 
-interface NavigationLayoutProps {
-  children: React.ReactNode;
-}
-
-export default function NavigationLayout({ children }: NavigationLayoutProps) {
-  const [mobileOpen, setMobileOpen] = useState(false);
+export default function NavigationLayout({ children }: NavigationLayoutProps): JSX.Element {
+  const [mobileOpen, setMobileOpen] = useState<boolean>(false);
   const { theme, setTheme } = useCustomTheme();
   const muiTheme = useTheme();
-  const isMobile = useMediaQuery(muiTheme.breakpoints.down('md'));
+  const isMobile: boolean = useMediaQuery(muiTheme.breakpoints.down('md'));
 
-  const handleDrawerToggle = () => {
+  const handleDrawerToggle = (): void => {
     setMobileOpen(!mobileOpen);
   };
 
-  const handleThemeChange = () => {
+  const handleThemeChange = (): void => {
     const themes: Theme[] = ['light', 'dark', 'auto'];
-    const currentIndex = themes.indexOf(theme);
-    const nextIndex = (currentIndex + 1) % themes.length;
+    const currentIndex: number = themes.indexOf(theme);
+    const nextIndex: number = (currentIndex + 1) % themes.length;
     setTheme(themes[nextIndex]);
   };
 
-  const getThemeIcon = () => {
+  const getThemeIcon = (): JSX.Element => {
     switch (theme) {
       case 'light':
         return <LightModeIcon />;
@@ -67,7 +64,7 @@ export default function NavigationLayout({ children }: NavigationLayoutProps) {
     }
   };
 
-  const drawer = (
+  const drawer: JSX.Element = (
     <Box>
       <Toolbar>
         <Typography variant="h6" noWrap component="div" sx={{ fontWeight: 'bold' }}>
