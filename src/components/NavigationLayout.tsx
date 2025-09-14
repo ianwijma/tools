@@ -1,6 +1,7 @@
 'use client';
 
 import {
+  GitHub as GitHubIcon,
   Image as ImageIcon,
   DataObject as JsonIcon,
   Menu as MenuIcon,
@@ -72,6 +73,17 @@ export default function NavigationLayout({
           <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
             Online Tools Collection
           </Typography>
+          <IconButton
+            color="inherit"
+            aria-label="View source code on GitHub"
+            component="a"
+            href="https://github.com/ianwijma/tools"
+            target="_blank"
+            rel="noopener noreferrer"
+            edge="end"
+          >
+            <GitHubIcon />
+          </IconButton>
         </Toolbar>
       </AppBar>
 
