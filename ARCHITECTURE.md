@@ -16,7 +16,7 @@ The primary goal is to run tools entirely in the browser when possible. This app
 
 ### 2. Single Responsibility Principle
 
-Each tool should have **one clear, focused purpose**, here are a couple of examples:
+Each tool should have **one clear, focused purpose**. Here are some examples:
 
 - **Image Resizer**: Only resizes images, does not convert formats
 - **Text Formatter**: Only formats text, does not translate or analyze
@@ -159,9 +159,9 @@ export function ImageResizerTool() {
 
   return (
     <div className="tool-container">
-      <h2>Image Resizer</h2>
-      <p>Resize images to specific dimensions. This tool only resizes - use other tools for format conversion.</p>
-      {/* Tool UI focused on resizing only */}
+      <h2>Example Tool</h2>
+      <p>This tool has one clear purpose. It does one thing well.</p>
+      {/* Tool UI focused on single responsibility */}
     </div>
   );
 }
@@ -170,17 +170,17 @@ export function ImageResizerTool() {
 ### 3. Tool Page (`src/app/[tool-name]/page.tsx`)
 
 ```typescript
-import { ImageResizerTool } from '@/components/tools/ImageResizerTool';
+import { ExampleTool } from '@/components/tools/ExampleTool';
 
-export default function ImageResizerPage() {
+export default function ExampleToolPage() {
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Image Resizer</h1>
+      <h1 className="text-2xl font-bold mb-4">Example Tool</h1>
       <p className="text-gray-600 mb-6">
-        Resize images to specific dimensions. This tool focuses solely on resizing - 
-        for format conversion, use the Image Converter tool.
+        This tool has one clear purpose. It focuses solely on its specific function - 
+        for other functions, use other specialized tools.
       </p>
-      <ImageResizerTool />
+      <ExampleTool />
     </div>
   );
 }

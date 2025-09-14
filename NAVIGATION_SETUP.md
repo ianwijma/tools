@@ -44,34 +44,21 @@ The application now uses Material Design navigation with:
 
 ## Available Tools
 
-The side navigation currently includes:
-1. **Text Formatter** - Format and transform text
-2. **JSON Validator** - Validate and format JSON
-3. **Image Resizer** - Resize and optimize images
-4. **Color Converter** - Convert between color formats
-5. **Base64 Encoder** - Encode and decode Base64
-6. **URL Shortener** - Shorten long URLs
+The side navigation is ready to display tools as they are implemented. Currently, no tools are available, but the navigation system is set up to automatically display them when added.
 
 ## Adding New Tools
 
 To add a new tool to the navigation:
 
 1. **Create the tool page** in `src/app/[tool-name]/page.tsx`
-2. **Update the tools array** in `NavigationLayout.tsx`:
-   ```typescript
-   const tools = [
-     // ... existing tools
-     { id: 'new-tool', name: 'New Tool', description: 'Tool description' },
-   ];
-   ```
-
+2. **Add the tool to the navigation** by updating the `tools` array in `src/components/NavigationLayout.tsx`
+3. **Follow Material Design guidelines** for consistent UI implementation
 ## Styling
 
-The navigation uses Atlassian design tokens for consistent styling:
-- `var(--ds-text)` - Primary text color
-- `var(--ds-text-subtle)` - Secondary text color
-- `var(--ds-surface)` - Background colors
-- `var(--ds-border)` - Border colors
+The navigation uses Material Design tokens for consistent styling:
+- Material UI theme system for colors and typography
+- Responsive design that adapts to different screen sizes
+- Consistent spacing and elevation using Material Design principles
 
 ## Development
 
