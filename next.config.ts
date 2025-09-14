@@ -1,13 +1,13 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   // Enable standalone output for Docker
-  output: "standalone",
+  output: 'standalone',
 
   // Optimize for production
   experimental: {
     // Enable modern bundling optimizations
-    optimizePackageImports: ["@mui/material", "@mui/icons-material"],
+    optimizePackageImports: ['@mui/material', '@mui/icons-material'],
   },
 
   // Compress responses
@@ -17,19 +17,19 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
-        source: "/(.*)",
+        source: '/(.*)',
         headers: [
           {
-            key: "X-Frame-Options",
-            value: "DENY",
+            key: 'X-Frame-Options',
+            value: 'DENY',
           },
           {
-            key: "X-Content-Type-Options",
-            value: "nosniff",
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
           },
           {
-            key: "Referrer-Policy",
-            value: "origin-when-cross-origin",
+            key: 'Referrer-Policy',
+            value: 'origin-when-cross-origin',
           },
         ],
       },

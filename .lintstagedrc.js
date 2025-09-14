@@ -1,22 +1,22 @@
 module.exports = {
   // TypeScript and JavaScript files
-  "*.{ts,tsx,js,jsx}": [
+  '*.{ts,tsx,js,jsx}': [
     // First run Biome for formatting and basic linting
-    "biome check --write",
+    'biome check --write',
     // Then run ESLint for strict code style enforcement
-    "eslint --fix",
+    'eslint --fix',
     // Finally check TypeScript types
-    () => "tsc --noEmit",
+    () => 'tsc --noEmit',
   ],
 
   // JSON files
-  "*.json": ["biome format --write"],
+  '*.json': ['biome format --write'],
 
   // CSS files
-  "*.css": ["biome format --write"],
+  '*.css': ['biome format --write'],
 
   // Test files - run tests for changed files
-  "**/*.test.{ts,tsx,js,jsx}": [
-    "jest --bail --findRelatedTests --passWithNoTests",
+  '**/*.test.{ts,tsx,js,jsx}': [
+    'jest --bail --findRelatedTests --passWithNoTests',
   ],
 };

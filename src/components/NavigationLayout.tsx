@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { Menu as MenuIcon } from "@mui/icons-material";
+import { Menu as MenuIcon } from '@mui/icons-material';
 import {
   AppBar,
   Box,
@@ -9,10 +9,10 @@ import {
   IconButton,
   Toolbar,
   Typography,
-} from "@mui/material";
-import { useState } from "react";
-import type { NavigationLayoutProps, Tool } from "@/types";
-import DrawerContent from "./DrawerContent";
+} from '@mui/material';
+import { useState } from 'react';
+import type { NavigationLayoutProps, Tool } from '@/types';
+import DrawerContent from './DrawerContent';
 
 const drawerWidth: number = 280;
 
@@ -29,7 +29,7 @@ export default function NavigationLayout({
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: 'flex' }}>
       <AppBar
         position="fixed"
         sx={{
@@ -43,7 +43,7 @@ export default function NavigationLayout({
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { md: "none" } }}
+            sx={{ mr: 2, display: { md: 'none' } }}
           >
             <MenuIcon />
           </IconButton>
@@ -65,9 +65,9 @@ export default function NavigationLayout({
             keepMounted: true,
           }}
           sx={{
-            display: { xs: "block", md: "none" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
+            display: { xs: 'block', md: 'none' },
+            '& .MuiDrawer-paper': {
+              boxSizing: 'border-box',
               width: drawerWidth,
             },
           }}
@@ -77,9 +77,9 @@ export default function NavigationLayout({
         <Drawer
           variant="permanent"
           sx={{
-            display: { xs: "none", md: "block" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
+            display: { xs: 'none', md: 'block' },
+            '& .MuiDrawer-paper': {
+              boxSizing: 'border-box',
               width: drawerWidth,
             },
           }}

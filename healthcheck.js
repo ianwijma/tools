@@ -1,11 +1,11 @@
 // Health check for Docker container
-const http = require("node:http");
+const http = require('node:http');
 
 const options = {
-  hostname: "localhost",
+  hostname: 'localhost',
   port: process.env.PORT || 3000,
-  path: "/",
-  method: "GET",
+  path: '/',
+  method: 'GET',
   timeout: 2000,
 };
 
@@ -18,13 +18,13 @@ const req = http.request(options, (res) => {
   }
 });
 
-req.on("error", (err) => {
+req.on('error', (err) => {
   console.error(`Health check failed: ${err.message}`);
   process.exit(1);
 });
 
-req.on("timeout", () => {
-  console.error("Health check timed out");
+req.on('timeout', () => {
+  console.error('Health check timed out');
   req.destroy();
   process.exit(1);
 });

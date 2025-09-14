@@ -1,5 +1,5 @@
-import { Box, Card, Typography } from "@mui/material";
-import NavigationLayout from "@/components/NavigationLayout";
+import { Box, Card, Typography } from '@mui/material';
+import NavigationLayout from '@/components/NavigationLayout';
 
 export default function Home(): JSX.Element {
   return (
@@ -9,7 +9,7 @@ export default function Home(): JSX.Element {
           variant="h3"
           component="h1"
           gutterBottom
-          sx={{ fontWeight: "bold" }}
+          sx={{ fontWeight: 'bold' }}
         >
           Welcome to Online Tools Collection
         </Typography>
@@ -32,7 +32,7 @@ export default function Home(): JSX.Element {
           <Typography variant="body2" component="div" sx={{ pl: 2 }}>
             1. Create a new page in <code>src/app/[tool-name]/page.tsx</code>
             <br />
-            2. Add the tool to the navigation in{" "}
+            2. Add the tool to the navigation in{' '}
             <code>src/components/NavigationLayout.tsx</code>
             <br />
             3. Follow the Material Design guidelines for consistent UI

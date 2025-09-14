@@ -1,5 +1,5 @@
 // Core project types
-import type React from "react";
+import type React from 'react';
 
 // Tool-related types
 export interface Tool {
@@ -43,14 +43,14 @@ export interface FormField {
   name: string;
   label: string;
   type:
-    | "text"
-    | "email"
-    | "password"
-    | "number"
-    | "textarea"
-    | "select"
-    | "checkbox"
-    | "radio";
+    | 'text'
+    | 'email'
+    | 'password'
+    | 'number'
+    | 'textarea'
+    | 'select'
+    | 'checkbox'
+    | 'radio';
   required?: boolean;
   placeholder?: string;
   options?: Array<{ value: string; label: string }>;
@@ -86,13 +86,13 @@ export type SubmitEventHandler<T = HTMLFormElement> = (
 ) => void;
 
 // Common utility types
-export type Status = "idle" | "loading" | "success" | "error";
-export type Size = "small" | "medium" | "large";
+export type Status = 'idle' | 'loading' | 'success' | 'error';
+export type Size = 'small' | 'medium' | 'large';
 export type Variant =
-  | "primary"
-  | "secondary"
-  | "success"
-  | "error"
-  | "warning"
-  | "info";
-export type Direction = "up" | "down" | "left" | "right";
+  | 'primary'
+  | 'secondary'
+  | 'success'
+  | 'error'
+  | 'warning'
+  | 'info';
+export type Direction = 'up' | 'down' | 'left' | 'right';
