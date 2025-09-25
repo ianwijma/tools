@@ -6,6 +6,7 @@ import {
   Image as ImageIcon,
   DataObject as JsonIcon,
   Menu as MenuIcon,
+  Security as SecurityIcon,
 } from '@mui/icons-material';
 import {
   AppBar,
@@ -49,6 +50,13 @@ const toolCategories: ToolCategory[] = [
           'Convert images between formats with bulk processing support',
         icon: <ImageIcon />,
         href: '/image-converter',
+      },
+      {
+        name: 'Image Metadata Remover',
+        description:
+          'Remove EXIF data and metadata from images for privacy protection',
+        icon: <SecurityIcon />,
+        href: '/image-metadata-remover',
       },
       {
         name: 'GIF Editor',

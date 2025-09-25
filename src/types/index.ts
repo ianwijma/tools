@@ -101,3 +101,24 @@ export type Variant =
   | 'warning'
   | 'info';
 export type Direction = 'up' | 'down' | 'left' | 'right';
+
+// Export GIF creator types selectively to avoid conflicts
+export type {
+  DragDropResult,
+  FrameEditAction,
+  FrameValidationResult,
+  GifCreatorError,
+  GifCreatorInput,
+  GifCreatorOptions,
+  GifCreatorOutput,
+  GifCreatorPreset,
+  GifCreatorPresetConfig,
+  GifFrame,
+  GifGenerationProgress,
+  GifValidationResult,
+  TimelinePosition,
+} from './gif-creator';
+// Re-export tool-specific types
+export * from './image-converter';
+export * from './image-metadata-remover';
+export * from './json-formatter';
