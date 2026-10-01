@@ -136,10 +136,11 @@ jobs:
             exit 1
           fi
           
-          # Check for JSX in variables
-          if grep -r "const.*=.*<" src/ --include="*.tsx" | grep -v "React.createElement"; then
+          # Check for JSX in variables (only actual JSX assignments like `const foo = <div>`,
+          # not generics such as `useState<string>`)
+          if grep -rE "const +[A-Za-z_$][A-Za-z0-9_$]* *=\s*<" src/ --include="*.tsx" | grep -v "React.createElement"; then
             echo "❌ Found JSX assigned to variables (not allowed):"
-            grep -r "const.*=.*<" src/ --include="*.tsx" | grep -v "React.createElement"
+            grep -rE "const +[A-Za-z_$][A-Za-z0-9_$]* *=\s*<" src/ --include="*.tsx" | grep -v "React.createElement"
             exit 1
           fi
           
@@ -150,10 +151,10 @@ jobs:
             exit 1
           fi
           
-          # Check for global storage usage
-          if grep -r "global\." src/ --include="*.ts" --include="*.tsx"; then
+          # Check for global storage usage (test files excluded; jest globals are expected there)
+          if grep -r "global\." src/ --include="*.ts" --include="*.tsx" | grep -v "__tests__"; then
             echo "❌ Found global storage usage (not allowed):"
-            grep -r "global\." src/ --include="*.ts" --include="*.tsx"
+            grep -r "global\." src/ --include="*.ts" --include="*.tsx" | grep -v "__tests__"
             exit 1
           fi
           
