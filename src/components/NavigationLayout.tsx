@@ -3,6 +3,7 @@
 import {
   Gif as GifIcon,
   GitHub as GitHubIcon,
+  AutoAwesome as GlitterIcon,
   Image as ImageIcon,
   DataObject as JsonIcon,
   Menu as MenuIcon,
@@ -63,6 +64,12 @@ const toolCategories: ToolCategory[] = [
         description: 'Create animated GIFs from images with timeline control',
         icon: <GifIcon />,
         href: '/gif-editor',
+      },
+      {
+        name: 'Glitter-ify',
+        description: 'Turn images into sparkly animated glitter GIFs',
+        icon: <GlitterIcon />,
+        href: '/glitter-ify',
       },
     ],
   },
